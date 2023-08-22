@@ -1,0 +1,31 @@
+<% include ../shared/header.ejs %>
+    <div class="page-content">
+        <div class="row">
+
+            <div class="col-md-9 col-sm-9 page-content-col" id="main_mobile_content">
+                <h3 class="page-title">
+                </h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet light bordered">
+
+                            <div class="portlet-title">
+                                <button type="button" class="btn btn-danger" id="remove_btn" disabled>
+                                    <i class="fa fa-trash"></i><%= __('loans.delete') %></button>
+                            </div>
+                            <div class="portlet-body">
+                                <table id="loan_table"> </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                var user_app_id = '<%- user.appId%>'
+            </script>
+            <script src="/app/lang/loans_<%= locale %>.js" type="text/javascript"></script>
+            <script src="/app/js/loans.js" type="text/javascript"></script>
+            <div class="col-md-3 col-sm-3 page-content-col">
+                <% include calls.ejs %>
+            </div>
+            <% include ../shared/footer.ejs %>

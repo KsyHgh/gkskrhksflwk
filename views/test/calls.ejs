@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>통화기록</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+    <% include socket.ejs %>
+</head>
+
+<body>
+
+    <p>통화기록</p>
+    <table id="table_data">
+    </table>
+
+    <script type="text/javascript">
+        var base_url = "/api/calls";
+
+        var TYPE_BLOCK = 0;
+        var TYPE_CALL = 1;
+
+        var CALL_STATE_START = 0;
+        var CALL_STATE_OFFHOOK = 1;
+        var CALL_STATE_END = 2;
+
+        var direction_array = ['수신', '발신'];
+
+        function refreshData() {
+            $.get(base_url, function(res) {
+                var data = res.items;
+                var html_string = `
+                    <tr>
+                    <th>휴대폰</th>
+                    <th>전화번호</th>
+                    <th>실제번호</th>
+                    <th>방향</th>
+                    <th>시간</th>
+                    <th>상태</th>
+                    <th>결과</th>
+                    <th>액션</th>
+                </tr> `;
+                for (var i = 0; i < data.length; i++) {
+                    var status = '';
+                    const actions = [];
+                    const hangupAction = `<button type="button" onclick="hangup(${data[i].id})">호출끊기</button>`;
+                    if (data[i].type == TYPE_BLOCK) {
+                        status = 'BLOCK';
+                    } else if (data[i].type == TYPE_CALL) {
+                        if (data[i].call_state == CALL_STATE_START) {
+                            status = 'START';
+                            actions.push(hangupAction);
+                        } else if (data[i].call_state == CALL_STATE_OFFHOOK) {
+                            status = 'OFFHOOK';
+                            actions.push(hangupAction);
+                        } else if (data[i].call_state == CALL_STATE_END) {
+                            status = 'END';
+                        }
+                    }
+                    var result = '';
+                    if (status == 'END') {
+                        if (data[i].end_time != 0) {
+                            result = Math.ceil((data[i].end_time - data[i].time) / 1000) + 's'
+                        }
+                    }
+                    html_string += `<tr>
+                        <td>${data[i].mobile_number}</td>
+                        <td>${data[i].number}</td>
+                        <td>${(data[i].number_real != null)? data[i].number_real : ''}</td>
+                        <td>${direction_array[data[i].direction]}</td>
+                        <td>${formatDateToString(data[i].time)}</td>
+                        <td>${status}</td>
+                        <td>${result}</td>
+                        <td>${actions.join(' ')}</td>
+                        </tr>`;
+                }
+                $('#table_data').html(html_string);
+            })
+        }
+
+        function formatDateToString(time) {
+            const date = new Date(time);
+            const Y = date.getFullYear();
+            const M = date.getMonth();
+            const D = date.getDate();
+            const h = date.getHours();
+            const m = date.getMinutes();
+            return `${Y}-${M}-${D} ${h}:${m}`;
+        }
+
+        $(function() {
+            refreshData();
+
+            socket.on("call_updated", function() {
+                console.log("call_updated");
+                refreshData();
+            });
+        });
+
+        function hangup(id) {
+            $.ajax({
+                type: 'post',
+                url: `/api/mobile/hangup`,
+                data: {
+                    id,
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {}
+            });
+        }
+    </script>
+</body>
+
+</html>

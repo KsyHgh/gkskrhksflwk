@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>관페로그</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link
+      href="/assets/global/plugins/font-awesome-4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/simple-line-icons/simple-line-icons.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/uniform/css/uniform.default.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/jstree/dist/themes/default/style.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <!-- <link href="/assets/global/plugins/bootstrap-table/bootstrap-table_1.css" rel="stylesheet" type="text/css" /> -->
+    <link
+      href="/assets/global/plugins/bootstrap-table/bootstrap-table.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/bootstrap-table/bootstrap-table-fixed-columns.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    />
+    <link
+      href="/assets/global/plugins/bootstrap-toastr/toastr.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/fancybox/source/jquery.fancybox.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/cubeportfolio/css/cubeportfolio.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link
+      href="/assets/global/css/components.min.css"
+      rel="stylesheet"
+      id="style_components"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/css/plugins.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- END THEME GLOBAL STYLES -->
+
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link
+      href="/assets/layouts/layout/css/layout.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- <link href="/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" /> -->
+    <link
+      href="/assets/layouts/layout/css/themes/default.min.css"
+      rel="stylesheet"
+      type="text/css"
+      id="style_color"
+    />
+    <link
+      href="/assets/layouts/layout/css/custom.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/MyFonts/stylesheet.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/assets/josh/vendors/sweetalert/css/sweetalert.css"
+    />
+    <!-- END THEME LAYOUT STYLES -->
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <!--[if lt IE 9]>
+      <script src="/assets/global/plugins/respond.min.js"></script>
+      <script src="/assets/global/plugins/excanvas.min.js"></script>
+    <![endif]-->
+    <!-- BEGIN CORE PLUGINS -->
+    <script
+      src="/assets/global/plugins/jquery.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap/js/bootstrap.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/js.cookie.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/jquery.blockui.min.js"
+      type="text/javascript"
+    ></script>
+    <!-- <script src="/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script> -->
+    <script
+      src="/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"
+      type="text/javascript"
+    ></script>
+    <!-- END CORE PLUGINS -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <!-- <script src="/assets/global/plugins/bootstrap-table/bootstrap-table_1.js" type="text/javascript"></script> -->
+    <script
+      src="/assets/global/plugins/bootstrap-table/bootstrap-table.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/bootstrap-table-fixed-columns.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/bootstrap-table-export.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/jspdf.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/jspdf.plugin.autotable.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/tableExport.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/bootstrap-table-contextmenu.js"
+      type="text/javascript"
+    ></script>
+
+    <script
+      src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/jquery-ui/jquery-ui.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootbox/bootbox.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/fancybox/source/jquery.fancybox.pack.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/cubeportfolio/js/jquery.cubeportfolio.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/jquery-bootpag/jquery.bootpag.min.js"
+      type="text/javascript"
+    ></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- BEGIN THEME GLOBAL SCRIPTS -->
+    <script
+      src="/assets/global/scripts/app.min.js"
+      type="text/javascript"
+    ></script>
+    <!-- END THEME GLOBAL SCRIPTS -->
+
+    <!-- BEGIN THEME LAYOUT SCRIPTS -->
+    <script
+      src="/assets/vendors/moment/js/moment.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/layouts/layout/scripts/layout.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/layouts/layout/scripts/demo.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/layouts/global/scripts/quick-sidebar.min.js"
+      type="text/javascript"
+    ></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <script
+      type="text/javascript"
+      src="/assets/josh/vendors/sweetalert/js/sweetalert.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/assets/josh/vendors/sweetalert/js/sweetalert-dev.js"
+    ></script>
+
+    <script type="text/javascript" src="/assets/plugins/crypto-js.js"></script>
+    
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th {
+            padding: 5px;
+            text-align: left;
+            background-color: white;
+            color: #32c5d2;
+        }
+
+        td {
+            padding: 5px;
+            text-align: left;
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light form-fit bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-social-dribbble font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">항목 선택</span>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <!-- BEGIN FORM-->
+                    <div class="form-horizontal form-row-seperated">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="control-label col-md-1">업체: </label>
+                                <div class="col-md-2">
+                                    <select class="bs-select form-control" id="id-select-appid">
+                                    </select>
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-primary" id="id-btn-confirm-appid">확 인</button>
+                                </div>
+                                <label class="control-label col-md-1">기기: </label>
+                                <div class="col-md-2">
+                                    <input class="form-control" type="text" id="id-input-device">
+                                </div>
+                                <div class="col-md-1">
+                                    <button class="btn btn-primary" id="id-btn-confirm-device">확 인</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END FORM-->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <table id="id-table" class="table table-hover">
+        </table>
+    </div>
+    
+    <script type="text/javascript">
+        $(function() {
+            $.get("/api/users", {}, function (res) {
+                var data = res.items;
+                var htmlString = '';
+                for (var i = 0; i < data.length; i++) {
+                    htmlString += "<option value='" + data[i].app_id + "'>" + data[i].username + "</option>";
+                }
+                $("#id-select-appid").html(htmlString);
+            });
+
+            $('#id-btn-confirm-appid').click(function() {
+                const appId = $('#id-select-appid').val();
+
+                $.get(`/api/actionlogs/appid/${appId}`,
+                    function (res) {
+                        var data = res.items;
+                        if (data.length == 0) {
+                            toastr['warning']("이력이 없습니다.");
+                            $('#id-table').html('');
+                            return;
+                        }
+                        var html_string = `<tr><th colspan="2">내용</th></tr> `;
+                        for (var i = 0; i < data.length; i++) {
+                            html_string += `<tr><td style="width: 1%; white-space: nowrap;">${data[i].time}</td><td>${data[i].content}</td></tr>`;
+                        }
+                        $('#id-table').html(html_string);
+                    })
+            });
+
+            $('#id-btn-confirm-device').click(function() {
+                const number = $('#id-input-device').val();
+                if(number == '') {
+                    toastr['warning']('번호를 정확히 입력하시오');
+                    $('#id-table').html('');
+                    return;
+                }
+
+                $.get(`/api/actionlogs/device/${number}`,
+                    function (res) {
+                        var data = res.items;
+                        if (data.length == 0) {
+                            toastr['warning']("이력이 없습니다.");
+                            $('#id-table').html('');
+                            return;
+                        }
+                        var html_string = `<tr><th colspan="2">내용</th></tr> `;
+                        for (var i = 0; i < data.length; i++) {
+                            html_string += `<tr><td style="width: 1%; white-space: nowrap;">${data[i].time}</td><td>${data[i].content}</td></tr>`;
+                        }
+                        $('#id-table').html(html_string);
+                    })
+            });
+        })
+    </script>
+</body>
+
+</html>

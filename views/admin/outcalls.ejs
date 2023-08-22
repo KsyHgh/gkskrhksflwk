@@ -1,0 +1,112 @@
+<% include ../shared/header.ejs %>
+    <div class="page-content">
+        <style>
+            .search_item {
+                padding-left: 5px !important;
+                padding-right: 5px !important;
+            }
+        </style>
+        <div class="row">
+
+            <div class="col-md-9 col-sm-9 page-content-col" id="main_mobile_content">
+                <h3 class="page-title"></h3>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet light bordered">
+                            <div style="margin-top: 10px;">
+                                <div class="row" id="search_panel" style="display: none;">
+                                    <div class="form-group col-sm-3 search_item">
+                                        <label class="col-sm-5 search_item"><%= __('outcalls.name') %>:</label>
+                                        <div class="col-sm-7 search_item">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('outcalls.name') %>" id="search_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3 search_item">
+                                        <label class="col-sm-5 search_item"><%= __('outcalls.numbersVisible') %>:</label>
+                                        <div class="col-sm-7 search_item">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('outcalls.numbersVisible') %>" id="search_number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3 search_item">
+                                        <label class="col-sm-5 search_item"><%= __('outcalls.callingNumber') %>:</label>
+                                        <div class="col-sm-7 search_item">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('outcalls.callingNumber') %>" id="search_number_real">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-sm-3 search_item">
+                                        <button type="button" class="btn green btn-outline" id="search_apply_btn"><%= __('outcalls.submit') %></button>
+                                        <button type="button" class="btn default btn-outline" id="search_cancel_btn"><%= __('outcalls.cancellation') %></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="portlet-title">
+                                <button type="button" class="btn btn-primary" id="add_btn"><i class="fa fa-plus"></i><%= __('outcalls.addition') %></button>
+                                <button type="button" class="btn btn-primary" id="edit_btn" disabled><i class="fa fa-edit"></i><%= __('outcalls.change') %></button>
+                                <button type="button" class="btn btn-danger" id="remove_btn" disabled><i class="fa fa-trash"></i><%= __('outcalls.delete') %></button>
+                                <button type="button" class="btn yellow btn-outline" id="search_btn"><i class="fa fa-search" aria-hidden="true"></i><%= __('outcalls.search') %></button>
+                                <input type="checkbox" class="uiswitch" checked id="outcall_enabled" style="top: 10px !important;">
+                            </div>
+                            <div class="portlet-body">
+                                <table id="outcall_table"> </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="add_modal" tabindex="-1" role="basic" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title" id="action_title"><%= __('outcalls.addition') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <input type="hidden" id="id">
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('outcalls.name') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('outcalls.contactName') %>" id="name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('outcalls.numbersVisible') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('outcalls.contactNumber') %>" id="number">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('outcalls.callingNumber') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('outcalls.callingNumber') %>" id="number_real">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('outcalls.situation') %>:</label>
+                                        <div class="col-md-9">
+                                            <select id="enabled" class="form-control input-sm">
+                                                <option value="1"><%= __('outcalls.situation.activate') %></option>
+                                                <option value="0"><%= __('outcalls.situation.disabled') %></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn green" id="action_btn"><%= __('outcalls.check') %></button>
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('outcalls.cancellation') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="/app/lang/outcalls_<%= locale %>.js" type="text/javascript"></script>
+            <script src="/app/js/outcalls.js" type="text/javascript"></script>
+            <div class="col-md-3 col-sm-3 page-content-col">
+                <% include calls.ejs %>
+            </div>
+            <% include ../shared/footer.ejs %>

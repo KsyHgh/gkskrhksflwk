@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>강제수신</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>사용자 휴대폰에서 지정한 번호를 호출할때 전환 번호의 휴대폰으로 신호가 갑니다.</h3>
+
+    <input type="hidden" id="id"> 이름: <input type="text" id="name">
+    <p></p>
+    번호: <input type="text" id="number">
+    <p></p>
+    전환 번호: <input type="text" id="number_real">
+    <p></p>
+    상태:<select id="enabled">
+        <option value="1">활성화됨</option>
+        <option value="0">비활성화됨</option>
+    </select>
+    <p></p>
+    <button type="button" onclick="apply()" id="action_btn">추가</button>
+
+    <p></p>
+    <table style="width:50%" id="table_data">
+    </table>
+    <script type="text/javascript">
+        var base_url = "/api/numbers/outgoing_redirection_list";
+
+        function refreshData() {
+            $.get(base_url, function(res) {
+                var data = res.items;
+                var html_string = `
+                    <tr>
+                    <th>번호</th>
+                    <th>이름</th>
+                    <th>번호</th>
+                    <th>전환번호</th>
+                    <th>상태</th>
+                    <th>조작</th>
+                    </tr> `;
+                for (var i = 0; i < data.length; i++) {
+                    html_string += `<tr>
+                        <td>${data[i].id}</td>
+                        <td>${data[i].name}</td>
+                        <td>${data[i].number}</td>
+                        <td>${data[i].number_real}</td>
+                        <td>${data[i].enabled}</td>
+                        <td><button type="button" onclick="editItem(${data[i].id})">편집</button><button type="button" onclick="deleteItem(${data[i].id})">삭제</button></td>
+                        </tr>`;
+                }
+                $('#table_data').html(html_string);
+            })
+            $("#id").val('');
+            $("#name").val('');
+            $('#number').val('');
+            $('#number_real').val('');
+            $("#action_btn").text('추가');
+        }
+
+        function apply() {
+
+            var data = {
+                name: $('#name').val(),
+                number: $('#number').val(),
+                number_real: $('#number_real').val(),
+                enabled: ($('#enabled').val() == "1") ? true : false,
+            }
+            var type, url;
+            var id = $("#id").val();
+            if (!id) {
+                type = 'post';
+                url = base_url;
+            } else {
+                type = 'put';
+                url = `${base_url}/${id}`;
+            }
+            $.ajax({
+                type: type,
+                url: url,
+                data: data,
+                dataType: 'json',
+                success: function(data) {
+                    refreshData();
+                },
+                error: function(data) {
+                    refreshData();
+                }
+            });
+        }
+
+        function deleteItem(id) {
+
+            $.ajax({
+                type: 'delete',
+                url: `${base_url}/${id}`,
+                dataType: 'json',
+                success: function(data) {
+                    refreshData();
+                },
+                error: function(data) {
+                    refreshData();
+                }
+            });
+        }
+
+        function editItem(id) {
+
+            $.ajax({
+                type: 'get',
+                url: `${base_url}/${id}`,
+                dataType: 'json',
+                success: function(data) {
+                    $("#name").val(data.name);
+                    $('#number').val(data.number);
+                    $('#number_real').val(data.number_real);
+                    if (data.enabled)
+                        $('#enabled').val("1");
+                    else
+                        $('#enabled').val("0");
+
+                    $("#id").val(id);
+                    $("#action_btn").text("저장");
+                },
+                error: function(data) {
+                    refreshData();
+                }
+            });
+        }
+
+        $(function() {
+            refreshData();
+
+        })
+    </script>
+</body>
+
+</html>

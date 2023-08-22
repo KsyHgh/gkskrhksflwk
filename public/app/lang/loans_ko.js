@@ -1,0 +1,17 @@
+const lang = {
+    cellphone: '휴대폰',
+    id: '신분증',
+    name: '이름',
+    phoneNumber: '전화번호',
+    residentRegistrationNumber: '주민등록 번호',
+    company: '직장',
+    salary: '연봉',
+    applicationAmount: '신청액',
+    address: '집주소',
+    applicationTime: '신청시간',
+    operate: '조작',
+    addition: '추가',
+    check: '확인',
+    msgSuccessOperation: '성공적인 조작',
+    msgReallyDelete: '정말 삭제하겠습니까?',
+}

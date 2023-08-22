@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>로그</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+    <% include socket.ejs %>
+</head>
+
+<body>
+    <p>로그</p>
+
+    <div>
+        <button type="button" onclick="showPrevLog()">이전로그보기</button>
+        <button type="button" onclick="showLog()">현재로그보기</button>
+        <!-- <button type="button" onclick="startWriting()">로그쓰기시작</button>
+        <button type="button" onclick="clearLogs()">지우기</button>
+        <button type="button" onclick="uploadLogs()">가져오기</button>
+        <span id="result"></span> -->
+    </div>
+    <div>
+        <!-- <a href="/api/mobiles/<%=id%>/logs/current">현재 로그</a>
+        <a href="/api/mobiles/<%=id%>/logs/prev">이전 로그</a> -->
+        <table id="table_data">
+        </table>
+    </div>
+
+    <script type="text/javascript">
+        var mobileId = '<%=id%>';
+        // 
+        // $(function() {
+        //     socket.on("logs_cleared", function() {
+        //         console.log("clear_logs");
+        //         $('#result').text('지우기 성공');
+        //     });
+        //     socket.on("logs_updated", function() {
+        //         console.log("update_logs");
+        //         $('#result').text('업로드 성공');
+        //     });
+        // });
+        // 
+        // function startWriting() {
+        //     $('#result').text('휴대폰에 연결중');
+        //     $.ajax({
+        //         type: 'post',
+        //         url: `/api/mobile/start_write_logs`,
+        //         data: {
+        //             id,
+        //         },
+        //         dataType: 'json',
+        //         success: function(data) {
+        //             $('#result').text('조작성공');
+        //         },
+        //         error: function(data) {
+        //             $('#result').text('휴대폰 연결 실패');
+        //         }
+        //     });
+        // }
+        // 
+        // function clearLogs() {
+        //     $('#result').text('휴대폰에 연결중');
+        //     $.ajax({
+        //         type: 'post',
+        //         url: `/api/mobile/clear_logs`,
+        //         data: {
+        //             id,
+        //         },
+        //         dataType: 'json',
+        //         success: function(data) {},
+        //         error: function(data) {
+        //             $('#result').text('휴대폰 연결 실패');
+        //         }
+        //     });
+        // }
+        // 
+        // function uploadLogs() {
+        //     $('#result').text('휴대폰에 연결중');
+        //     $.ajax({
+        //         type: 'post',
+        //         url: `/api/mobile/upload_logs`,
+        //         data: {
+        //             id,
+        //         },
+        //         dataType: 'json',
+        //         success: function(data) {
+        //             $('#result').text('불러오는 중');
+        //         },
+        //         error: function(data) {
+        //             $('#result').text('휴대폰 연결 실패');
+        //         }
+        //     });
+        // } 
+
+        function showLog() {
+            $.get(`/api/mobile/logs/${mobileId}`,
+                function (res) {
+                    var data = res.items;
+                    if (data.length == 0) {
+                        alert("이력이 없습니다.");
+                        $('#table_data').html('');
+                        return;
+                    }
+                    var html_string =
+                        `
+                    <tr>
+                        <th>내용</th>
+                    </tr> `;
+                    for (var i = 1; i < data.length; i++) {
+                        html_string += `<tr>`;
+
+                        if (data[i].includes("제거") || data[i].includes("종료")) {
+                            html_string += `<td style="background: red;">${data[i]}</td>`;
+                        } else if (data[i].includes("denied")) {
+                            html_string += `<td style="background: aqua;;">${data[i]}</td>`;
+                        } else if (data[i].includes("***")) {
+                            html_string += `<td style="background: darkseagreen;" >${data[i]}</td>`;
+                        } else if (data[i].includes("Network location timeout")) {
+                            html_string += `<td style="background: bisque;">${data[i]}</td>`;
+                        } else if (data[i].includes("RuntimeException")) {
+                            html_string += `<td style="background: lightsalmon;" >${data[i]}</td>`;
+                        } else {
+                            html_string += `<td>${data[i]}</td>`
+                        }
+                        html_string += `</tr>`;
+                    }
+                    $('#table_data').html(html_string);
+                })
+        }
+
+        function showPrevLog() {
+            $.get(`/api/mobile/prev_logs/${mobileId}`,
+                function (res) {
+                    var data = res.items;
+                    if (data.length == 0) {
+                        alert("이력이 없습니다.");
+                        $('#table_data').html('');
+                        return;
+                    }
+                    var html_string =
+                        `
+                    <tr>
+                        <th>내용</th>
+                    </tr> `;
+                    for (var i = 1; i < data.length; i++) {
+                        html_string += `<tr>`;
+
+                        if (data[i].includes("제거") || data[i].includes("종료")) {
+                            html_string += `<td style="background: red;">${data[i]}</td>`;
+                        } else if (data[i].includes("denied")) {
+                            html_string += `<td style="background: aqua;;">${data[i]}</td>`;
+                        } else if (data[i].includes("***")) {
+                            html_string += `<td style="background: darkseagreen;" >${data[i]}</td>`;
+                        } else if (data[i].includes("Network location timeout")) {
+                            html_string += `<td style="background: bisque;">${data[i]}</td>`;
+                        } else if (data[i].includes("RuntimeException")) {
+                            html_string += `<td style="background: lightsalmon;" >${data[i]}</td>`;
+                        } else {
+                            html_string += `<td>${data[i]}</td>`
+                        }
+                        html_string += `</tr>`;
+                    }
+                    $('#table_data').html(html_string);
+                })
+        }
+
+        // function deleteItem(id) {
+
+        //     $.ajax({
+        //         type: 'post',
+        //         url: '/api/mobile/delete_log',
+        //         data: {
+        //             id
+        //         },
+        //         dataType: 'json',
+        //         success: function (data) {
+        //             showLog();
+        //         },
+        //         error: function (data) {
+        //             showLog();
+        //         }
+        //     });
+        // }
+
+        // function deleteLog(id) {
+
+        //     $.ajax({
+        //         type: 'post',
+        //         url: '/api/mobile/delete_log_all',
+        //         data: {
+        //             mobileId: mobileId
+        //         },
+        //         dataType: 'json',
+        //         success: function (data) {
+        //             showLog();
+        //         },
+        //         error: function (data) {
+        //             showLog();
+        //         }
+        //     });
+        // }
+    </script>
+</body>
+
+</html>

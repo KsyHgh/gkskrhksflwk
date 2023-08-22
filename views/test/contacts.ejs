@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>연락처</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+        
+        .pan_board {
+            display: flex;
+        }
+    </style>
+    <% include socket.ejs %>
+</head>
+
+<body>
+
+    <p>연락처</p>
+    <div>
+        <button type="button" onclick="uploadContacts()">휴대폰에서 다시 가져오기</button>
+        <span id="upload_result"></span>
+    </div>
+    <hr>
+    <div class="pan_board">
+        <table>
+            <tr>
+                <td>이름:</td>
+                <td><input type="text" id="contact_name" value="홍길동"></td>
+                <td>번호:</td>
+                <td><input type="text" id="contact_number" value="010213513"></td>
+        </table>
+        <button type="button" onclick="addContact()">contact 추가</button>
+    </div>
+    <hr>
+    <table id="table_data">
+    </table>
+
+    <script type="text/javascript">
+        var id = '<%=id%>';
+        var base_url = `/api/mobiles/${id}/contacts`;
+
+        function refresh() {
+            $.get(base_url, function(res) {
+                var data = res.items;
+                var html_string = `
+                    <tr>
+                    <th>이름</th>
+                    <th>전화번호</th>
+                    <th>조작</th>
+                </tr> `;
+                for (var i = 0; i < data.length; i++) {
+                    html_string += `<tr>
+                        <td>${data[i].name}</td>
+                        <td>${data[i].number}</td>
+                        <td>
+                            <input type="button" onclick="deleteContact('${data[i].name}', '${data[i].number}')" value='삭제'>
+                            <input type="button" onclick="addBlackList('${data[i].number}')" value='블랙리스트'>
+                        </td>
+                        </tr>`;
+                }
+                $('#table_data').html(html_string);
+            })
+        }
+
+        function uploadContacts() {
+            $('#upload_result').text('휴대폰에 연결중');
+            $.ajax({
+                type: 'post',
+                url: `/api/mobile/upload_contacts`,
+                data: {
+                    id,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('#upload_result').text('불러오는 중');
+                },
+                error: function(data) {
+                    $('#upload_result').text('휴대폰 연결 실패');
+                }
+            });
+        }
+
+        function deleteContact(name, number) {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/delete_contact',
+                data: {
+                    id,
+                    contacts: [{
+                        name,
+                        number
+                    }],
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {}
+            });
+        }
+
+        function addContact() {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/add_contact',
+                data: {
+                    id,
+                    name: $('#contact_name').val(),
+                    number: $('#contact_number').val(),
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {}
+            });
+        }
+
+        function addBlackList(number) {
+            var data = {
+                number,
+                enabled: true,
+                mobile_id: id
+            }
+            $.ajax({
+                type: 'post',
+                url: '/api/numbers/blacklist',
+                data: data,
+                dataType: 'json',
+                success: function(data) {
+                    refreshData();
+                },
+                error: function(data) {
+                    refreshData();
+                }
+            });
+        }
+
+        $(function() {
+            refresh();
+
+            socket.on("contacts_updated", function() {
+                console.log("update_contacts");
+                $('#upload_result').text('성공');
+                refresh();
+            });
+        });
+    </script>
+</body>
+
+</html>

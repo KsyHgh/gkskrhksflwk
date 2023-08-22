@@ -1,0 +1,17 @@
+const lang = {
+    cellphone: 'cell phone',
+    id: 'id',
+    name: 'name',
+    phoneNumber: 'phone number',
+    residentRegistrationNumber: 'resident registration number',
+    company: 'company',
+    salary: 'salary',
+    applicationAmount: 'application amount',
+    address: 'home address',
+    applicationTime: 'Application time',
+    operate: 'operation',
+    addition: 'addition',
+    check: 'check',
+    msgSuccessOperation: 'successful operation',
+    msgReallyDelete: 'Are you sure you want to delete it?',
+}

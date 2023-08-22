@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>실시간 녹취</title>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+</head>
+
+<body>
+    <div>
+        <span id="status">LOADING</span>
+    </div>
+    <video id="video" style="object-fit: contain" autoplay></video>
+
+    <script src="/assets/media-stream-library.min.js"></script>
+
+    <script>
+        const id = '<%=id%>';
+        const channel = '<%=channel%>';
+
+        function stream() {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/stream',
+                data: {
+                    id,
+                    channel
+                },
+                dataType: 'json',
+                success: function(data) {
+                    const {
+                        wss,
+                        rtsp
+                    } = data;
+
+                    play(wss, rtsp);
+                },
+                error: function(data) {
+                    console.error(data.responseJSON.error);
+                    close();
+                }
+            });
+        }
+
+        let pipeline;
+
+        function close() {
+            pipeline && pipeline.close();
+            pipeline = null;
+
+            $('#status').text('CLOSED');
+        }
+
+        function play(wss, rtsp) {
+            if (!!pipeline)
+                return;
+
+            console.log(`Websocket: ${wss}, RTSP: ${rtsp}`);
+
+            $('#status').text('PLAYING');
+
+            const videoEl = document.querySelector('#video');
+
+            // Setup a new pipeline
+            pipeline = new mediaStreamLibrary.pipelines.Html5VideoPipeline({
+                ws: {
+                    uri: wss
+                },
+                rtsp: {
+                    uri: rtsp
+                },
+                mediaElement: videoEl,
+            });
+
+            // Restart stream on RTCP BYE (stream ended)
+            pipeline.rtsp.onRtcp = (rtcp) => {
+                if (mediaStreamLibrary.isRtcpBye(rtcp)) {
+                    console.log(`RTCP BYTE received`);
+                    close();
+                }
+            };
+
+            pipeline.rtsp.incoming.on('finish', () => {
+                close();
+            });
+
+            pipeline.ready.then(() => {
+                pipeline.rtsp.play();
+            });
+        }
+
+        $(function() {
+            setInterval(() => stream(), 1000);
+        })
+    </script>
+</body>
+
+</html>

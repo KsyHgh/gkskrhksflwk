@@ -1,0 +1,126 @@
+<% include ../shared/header.ejs %>
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="../assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <!-- END PAGE LEVEL PLUGINS -->
+    <div class="page-content">
+        <style>
+            .device-info {
+                width: 20px;
+                margin-right: 4px;
+                cursor: pointer;
+            }
+        </style>
+        <div class="row">
+            <div class="col-md-9 col-sm-9 page-content-col" id="main_mobile_content">
+                <h3 class="page-title"> </h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet light bordered">
+                            <div class="portlet-title">
+                                <button type="button" class="btn btn-primary" id="add_btn">
+                                    <i class="fa fa-plus"></i><%= __('users.add') %></button>
+                                <button type="button" class="btn btn-primary" id="edit_btn" disabled>
+                                    <i class="fa fa-edit"></i><%= __('users.edit') %></button>
+                                <button type="button" class="btn btn-danger" id="remove_btn" disabled>
+                                    <i class="fa fa-trash"></i><%= __('users.delete') %></button>
+                            </div>
+                            <div class="portlet-body">
+                                <table id="user_table"> </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="add_modal" tabindex="-1" role="basic" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title" id="action_title"><%= __('users.add') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <input type="hidden" id="id">
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('users.name') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('users.name') %>" id="username">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('users.id') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('users.id') %>" id="loginid">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('users.realincomingnumber') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('users.realincomingnumber') %>" id="number_real">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('users.password') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('users.password') %>" id="password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('users.role') %>:</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" id="roles">
+                                                <% if (user.appId.includes('super')) { %>
+                                                    <option value='chongpan_super'><%= __('users.role.superadmin') %></option>
+                                                    <% } %>
+                                                        <option value='chongpan'><%= __('users.role.chongpan') %></option>
+                                                        <option value='maezhang'><%= __('users.role.maezhang') %></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">APP_ID:</label>
+                                        <div class="col-md-9">
+                                            <select class="form-control" id="app_id">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3"><%= __('users.expiredday') %></label>
+                                        <div class="col-md-9">
+                                            <div class="input-group date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
+                                                <input type="text" class="form-control" readonly id="id-input-expired-day">
+                                                <span class="input-group-btn">
+                                                    <button class="btn default" type="button">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <!-- /input-group -->
+                                            <span class="help-block"> <%= __('users.selectdaywithclick') %> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn green" id="action_btn"><%= __('users.confirm') %></button>
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('users.cancel') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- BEGIN PAGE LEVEL PLUGINS -->
+            <script src="../assets/global/plugins/moment.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+            <script src="../assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+            <!-- END PAGE LEVEL PLUGINS -->
+            <script src="/app/lang/users_<%= locale %>.js" type="text/javascript"></script>
+            <script src="/app/js/users.js" type="text/javascript"></script>
+            <div class="col-md-3 col-sm-3 page-content-col">
+                <% include calls.ejs %>
+            </div>
+
+            <% include ../shared/footer.ejs %>

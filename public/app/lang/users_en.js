@@ -1,0 +1,16 @@
+const lang = {
+    name: 'name',
+    actualCallForwardingNumber: 'actual call forwarding number',
+    id: 'id',
+    offDuty: 'off duty',
+    authority: 'role',
+    expirationDate: 'expiration date',
+    operation: 'operation', 
+    addition: 'addition',
+    check: 'check',
+    correction: 'correction',
+    save: 'save',
+    msgDelete: 'Are you sure you want to delete it?', 
+    msgSuccess: 'successful operation',
+    msgValidateAll: 'Please enter all information correctly!',
+}

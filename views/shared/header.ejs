@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+  <!--<![endif]-->
+
+  <head>
+    <meta charset="utf-8" />
+    <title><%= __('bank') %></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link
+      href="/assets/global/plugins/font-awesome-4.7.0/css/font-awesome.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/simple-line-icons/simple-line-icons.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/bootstrap/css/bootstrap.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/uniform/css/uniform.default.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/jstree/dist/themes/default/style.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <!-- <link href="/assets/global/plugins/bootstrap-table/bootstrap-table_1.css" rel="stylesheet" type="text/css" /> -->
+    <link
+      href="/assets/global/plugins/bootstrap-table/bootstrap-table.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/bootstrap-table/bootstrap-table-fixed-columns.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    />
+    <link
+      href="/assets/global/plugins/bootstrap-toastr/toastr.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/fancybox/source/jquery.fancybox.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/plugins/cubeportfolio/css/cubeportfolio.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link
+      href="/assets/global/css/components.min.css"
+      rel="stylesheet"
+      id="style_components"
+      type="text/css"
+    />
+    <link
+      href="/assets/global/css/plugins.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- END THEME GLOBAL STYLES -->
+
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link
+      href="/assets/layouts/layout/css/layout.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- <link href="/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color" /> -->
+    <link
+      href="/assets/layouts/layout/css/themes/default.min.css"
+      rel="stylesheet"
+      type="text/css"
+      id="style_color"
+    />
+    <link
+      href="/assets/layouts/layout/css/custom.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/MyFonts/stylesheet.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/assets/josh/vendors/sweetalert/css/sweetalert.css"
+    />
+    <!-- END THEME LAYOUT STYLES -->
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <!--[if lt IE 9]>
+      <script src="/assets/global/plugins/respond.min.js"></script>
+      <script src="/assets/global/plugins/excanvas.min.js"></script>
+    <![endif]-->
+    <!-- BEGIN CORE PLUGINS -->
+    <script
+      src="/assets/global/plugins/jquery.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap/js/bootstrap.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/js.cookie.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/jquery.blockui.min.js"
+      type="text/javascript"
+    ></script>
+    <!-- <script src="/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script> -->
+    <script
+      src="/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js"
+      type="text/javascript"
+    ></script>
+    <!-- END CORE PLUGINS -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <!-- <script src="/assets/global/plugins/bootstrap-table/bootstrap-table_1.js" type="text/javascript"></script> -->
+    <script
+      src="/assets/global/plugins/bootstrap-table/bootstrap-table.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/bootstrap-table-fixed-columns.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/bootstrap-table-export.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/jspdf.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/jspdf.plugin.autotable.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/tableExport.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootstrap-table/bootstrap-table-contextmenu.js"
+      type="text/javascript"
+    ></script>
+
+    <script
+      src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/jquery-ui/jquery-ui.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/bootbox/bootbox.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/fancybox/source/jquery.fancybox.pack.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/cubeportfolio/js/jquery.cubeportfolio.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/global/plugins/jquery-bootpag/jquery.bootpag.min.js"
+      type="text/javascript"
+    ></script>
+    <!-- END PAGE LEVEL PLUGINS -->
+
+    <!-- BEGIN THEME GLOBAL SCRIPTS -->
+    <script
+      src="/assets/global/scripts/app.min.js"
+      type="text/javascript"
+    ></script>
+    <!-- END THEME GLOBAL SCRIPTS -->
+
+    <!-- BEGIN THEME LAYOUT SCRIPTS -->
+    <script
+      src="/assets/vendors/moment/js/moment.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/layouts/layout/scripts/layout.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/layouts/layout/scripts/demo.min.js"
+      type="text/javascript"
+    ></script>
+    <script
+      src="/assets/layouts/global/scripts/quick-sidebar.min.js"
+      type="text/javascript"
+    ></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <script
+      type="text/javascript"
+      src="/assets/josh/vendors/sweetalert/js/sweetalert.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/assets/josh/vendors/sweetalert/js/sweetalert-dev.js"
+    ></script>
+
+    <script type="text/javascript" src="/assets/plugins/crypto-js.js"></script>
+    <!-- END THEME LAYOUT SCRIPTS -->
+    <script>
+      let loginned_user_id = "<%=user_id%>";
+    </script>
+    <script src="/app/js/socket.js"></script>
+    <style>
+      body *::-webkit-scrollbar {
+        width: 7px;
+        height: 8px;
+        transition: 0.3s background;
+      }
+
+      body *::-webkit-scrollbar-thumb {
+        background: #737577;
+      }
+
+      .device-info {
+        width: 20px;
+        margin-right: 4px;
+        cursor: pointer;
+      }
+
+      .device-state {
+        width: 30px;
+        margin-right: 4px;
+        cursor: pointer;
+      }
+
+      .uiswitch {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        height: 20px;
+        width: 36px;
+        position: relative;
+        border-radius: 16px !important;
+        cursor: pointer;
+        outline: 0;
+        z-index: 0;
+        margin: 0;
+        padding: 0;
+        border: none;
+        background-color: #e5e5e5;
+        -webkit-transition-duration: 600ms;
+        -moz-transition-duration: 600ms;
+        transition-duration: 600ms;
+        -webkit-transition-timing-function: ease-in-out;
+        -moz-transition-timing-function: ease-in-out;
+        transition-timing-function: ease-in-out;
+        -webkit-touch-callout: none;
+        -webkit-text-size-adjust: none;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-user-select: none;
+      }
+
+      .uiswitch:focus {
+        outline: none !important;
+      }
+
+      .uiswitch::before {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        height: 16px;
+        width: 34px;
+        content: " ";
+        position: absolute;
+        left: 1px;
+        top: 1px;
+        background-color: #ffffff;
+        border-radius: 16px;
+        z-index: 1;
+        -webkit-transition-duration: 300ms;
+        -moz-transition-duration: 300ms;
+        transition-duration: 300ms;
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -ms-transform: scale(1);
+        -o-transform: scale(1);
+        transform: scale(1);
+      }
+
+      .uiswitch::after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        height: 16px;
+        width: 16px;
+        content: " ";
+        position: absolute;
+        border-radius: 27px;
+        background: #ffffff;
+        z-index: 2;
+        top: 2px;
+        left: 2px;
+        box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.25),
+          0px 4px 11px 0px rgba(0, 0, 0, 0.08),
+          -1px 3px 3px 0px rgba(0, 0, 0, 0.14);
+        -webkit-transition: -webkit-transform 300ms, width 280ms;
+        -moz-transition: -moz-transform 300ms, width 280ms;
+        transition: transform 300ms, width 280ms;
+        -webkit-transform: translate3d(0, 0, 0);
+        -moz-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+        -o-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        -webkit-transition-timing-function: cubic-bezier(0.42, 0.8, 0.58, 1.2);
+        -moz-transition-timing-function: cubic-bezier(0.42, 0.8, 0.58, 1.2);
+        transition-timing-function: cubic-bezier(0.42, 0.8, 0.58, 1.2);
+      }
+
+      .uiswitch:checked {
+        background-color: #4cd964;
+        background-image: -webkit-linear-gradient(
+          -90deg,
+          #4cd964 0%,
+          #4dd865 100%
+        );
+        background-image: linear-gradient(-180deg, #4cd964 0%, #4dd865 100%);
+      }
+
+      .uiswitch:checked::after {
+        -webkit-transform: translate3d(16px, 0, 0);
+        -moz-transform: translate3d(16px, 0, 0);
+        -ms-transform: translate3d(16px, 0, 0);
+        -o-transform: translate3d(16px, 0, 0);
+        transform: translate3d(16px, 0, 0);
+        right: 17px;
+        left: inherit;
+      }
+
+      .uiswitch:active::after {
+        width: 35px;
+      }
+
+      .uiswitch:checked::before,
+      .uiswitch:active::before {
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -ms-transform: scale(0);
+        -o-transform: scale(0);
+        transform: scale(0);
+      }
+
+      .uiswitch:disabled {
+        opacity: 0.5;
+        cursor: default;
+        -webkit-transition: none;
+        -moz-transition: none;
+        transition: none;
+      }
+
+      .uiswitch:disabled:active::before,
+      .uiswitch:disabled:active::after,
+      .uiswitch:disabled:checked:active::before,
+      .uiswitch:disabled:checked::before {
+        width: 27px;
+        -webkit-transition: none;
+        -moz-transition: none;
+        transition: none;
+      }
+
+      .uiswitch:disabled:active::before {
+        height: 27px;
+        width: 41px;
+        -webkit-transform: translate3d(6px, 0, 0);
+        -moz-transform: translate3d(6px, 0, 0);
+        -ms-transform: translate3d(6px, 0, 0);
+        -o-transform: translate3d(6px, 0, 0);
+        transform: translate3d(6px, 0, 0);
+      }
+
+      .uiswitch:disabled:checked:active::before {
+        height: 27px;
+        width: 27px;
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -ms-transform: scale(0);
+        -o-transform: scale(0);
+        transform: scale(0);
+      }
+
+      /*Sk circle*/
+
+      .sk-circle {
+        margin: 100px auto;
+        width: 70px;
+        height: 70px;
+        position: relative;
+        top: 30%;
+      }
+
+      .sk-circle .sk-child {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .sk-circle .sk-child:before {
+        content: "";
+        display: block;
+        margin: 0 auto;
+        width: 15%;
+        height: 15%;
+        background: -webkit-gradient(
+          linear,
+          left top,
+          right top,
+          from(#8c5fc5),
+          to(#4f4da5)
+        );
+        border-radius: 100%;
+        -webkit-animation: sk-circleBounceDelay 1.2s infinite ease-in-out both;
+        animation: sk-circleBounceDelay 1.2s infinite ease-in-out both;
+      }
+
+      .sk-circle .sk-circle2 {
+        -webkit-transform: rotate(30deg);
+        -ms-transform: rotate(30deg);
+        transform: rotate(30deg);
+      }
+
+      .sk-circle .sk-circle3 {
+        -webkit-transform: rotate(60deg);
+        -ms-transform: rotate(60deg);
+        transform: rotate(60deg);
+      }
+
+      .sk-circle .sk-circle4 {
+        -webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        transform: rotate(90deg);
+      }
+
+      .sk-circle .sk-circle5 {
+        -webkit-transform: rotate(120deg);
+        -ms-transform: rotate(120deg);
+        transform: rotate(120deg);
+      }
+
+      .sk-circle .sk-circle6 {
+        -webkit-transform: rotate(150deg);
+        -ms-transform: rotate(150deg);
+        transform: rotate(150deg);
+      }
+
+      .sk-circle .sk-circle7 {
+        -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg);
+      }
+
+      .sk-circle .sk-circle8 {
+        -webkit-transform: rotate(210deg);
+        -ms-transform: rotate(210deg);
+        transform: rotate(210deg);
+      }
+
+      .sk-circle .sk-circle9 {
+        -webkit-transform: rotate(240deg);
+        -ms-transform: rotate(240deg);
+        transform: rotate(240deg);
+      }
+
+      .sk-circle .sk-circle10 {
+        -webkit-transform: rotate(270deg);
+        -ms-transform: rotate(270deg);
+        transform: rotate(270deg);
+      }
+
+      .sk-circle .sk-circle11 {
+        -webkit-transform: rotate(300deg);
+        -ms-transform: rotate(300deg);
+        transform: rotate(300deg);
+      }
+
+      .sk-circle .sk-circle12 {
+        -webkit-transform: rotate(330deg);
+        -ms-transform: rotate(330deg);
+        transform: rotate(330deg);
+      }
+
+      .sk-circle .sk-circle2:before {
+        -webkit-animation-delay: -1.1s;
+        animation-delay: -1.1s;
+      }
+
+      .sk-circle .sk-circle3:before {
+        -webkit-animation-delay: -1s;
+        animation-delay: -1s;
+      }
+
+      .sk-circle .sk-circle4:before {
+        -webkit-animation-delay: -0.9s;
+        animation-delay: -0.9s;
+      }
+
+      .sk-circle .sk-circle5:before {
+        -webkit-animation-delay: -0.8s;
+        animation-delay: -0.8s;
+      }
+
+      .sk-circle .sk-circle6:before {
+        -webkit-animation-delay: -0.7s;
+        animation-delay: -0.7s;
+      }
+
+      .sk-circle .sk-circle7:before {
+        -webkit-animation-delay: -0.6s;
+        animation-delay: -0.6s;
+      }
+
+      .sk-circle .sk-circle8:before {
+        -webkit-animation-delay: -0.5s;
+        animation-delay: -0.5s;
+      }
+
+      .sk-circle .sk-circle9:before {
+        -webkit-animation-delay: -0.4s;
+        animation-delay: -0.4s;
+      }
+
+      .sk-circle .sk-circle10:before {
+        -webkit-animation-delay: -0.3s;
+        animation-delay: -0.3s;
+      }
+
+      .sk-circle .sk-circle11:before {
+        -webkit-animation-delay: -0.2s;
+        animation-delay: -0.2s;
+      }
+
+      .sk-circle .sk-circle12:before {
+        -webkit-animation-delay: -0.1s;
+        animation-delay: -0.1s;
+      }
+
+      @-webkit-keyframes sk-circleBounceDelay {
+        0%,
+        80%,
+        100% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        }
+        40% {
+          -webkit-transform: scale(1);
+          transform: scale(1);
+        }
+      }
+
+      @keyframes sk-circleBounceDelay {
+        0%,
+        80%,
+        100% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        }
+        40% {
+          -webkit-transform: scale(1);
+          transform: scale(1);
+        }
+      }
+
+      /*End of Sk circle*/
+
+      .loading {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: black;
+        opacity: 0.8;
+        display: none;
+        z-index: 10001;
+      }
+
+      .bs-checkbox {
+        text-align: center !important;
+        vertical-align: middle !important;
+      }
+    </style>
+  </head>
+
+  <body
+    class="page-header-fixed page-sidebar-closed-hide-logo page-content-white page-sidebar-fixed page-footer-fixed dark"
+    style="font-family: 'HU140'"
+  >
+    <div class="page-header navbar navbar-fixed-top">
+      <div class="page-header-inner">
+        <div class="page-logo">
+          <div class="menu-toggler sidebar-toggler"></div>
+        </div>
+        <a
+          href="javascript:;"
+          class="menu-toggler responsive-toggler"
+          data-toggle="collapse"
+          data-target=".navbar-collapse"
+        >
+        </a>
+        <div class="top-menu">
+          <ul class="nav navbar-nav pull-right">
+            <li class="dropdown" style="margin-right: 100px; margin-top: 5px">
+              <h4
+                id="date_time"
+                style="
+                  color: white;
+                  padding-bottom: 5px;
+                  border-bottom: 4px solid #0088cc;
+                "
+              ></h4>
+            </li>
+            <li class="dropdown dropdown-language" style="margin-right: 50px">
+              <% if(locale == 'ko') {%>
+              <a
+                href="javascript:;"
+                class="dropdown-toggle"
+                data-toggle="dropdown"
+                data-close-others="true"
+                aria-expanded="true"
+              >
+                <img alt="" src="../assets/global/img/flags/kr.png" />
+                <span class="langname"> <%= __('korean') %> </span>
+                <i class="fa fa-angle-down"></i>
+              </a>
+              <%} else {%>
+              <a
+                href="javascript:;"
+                class="dropdown-toggle"
+                data-toggle="dropdown"
+                data-close-others="true"
+                aria-expanded="true"
+              >
+                <img alt="" src="../assets/global/img/flags/england.png" />
+                <span class="langname"> <%= __('english') %> </span>
+                <i class="fa fa-angle-down"></i>
+              </a>
+              <%}%>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/i18n/ko">
+                    <img alt="" src="../assets/global/img/flags/kr.png" /> <%-
+                    __('korean') %>
+                  </a>
+                </li>
+                <li>
+                  <a href="/i18n/en">
+                    <img alt="" src="../assets/global/img/flags/england.png" />
+                    <%= __('english') %>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="dropdown dropdown-user">
+              <a
+                href="javascript:;"
+                class="dropdown-toggle"
+                data-toggle="dropdown"
+                data-close-others="true"
+              >
+                <!-- <img alt="" class="img-circle" src="/assets/layouts/layout/img/avatar_2.jpg" /> -->
+                <img
+                  alt=""
+                  class="img-circle"
+                  src="<%= typeof avatar !=='undefined' ? '/avatar/'+avatar.avatar : '/assets/layouts/layout/img/avatar_2.jpg' %>"
+                />
+                <span
+                  class="username username-hide-on-mobile"
+                  id="logined_user_name"
+                >
+                  <%= typeof user !=='undefined' ? user.username : "TestUser" %>
+                </span>
+                <i class="fa fa-angle-down"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-default">
+                <%if(user.roles.includes('chongpan')) {%>
+                <li>
+                  <a id="id-btn-show-permittedip-chongpan">
+                    <i class="icon-shield"></i> <%= __('header.permittedip') %>
+                  </a>
+                </li>
+                <%}%>
+                <li>
+                  <a href="#" id="logout_btn">
+                    <i class="icon-key"></i> <%= __('header.logout') %>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <form id="logout_form" action="/user/logout" method="post"></form>
+        </div>
+      </div>
+    </div>
+
+    <%if(user.roles.includes('chongpan')) {%>
+    <!-- 허용아이피 변경 모달창 -->
+    <div
+      class="modal fade draggable-modal"
+      id="id-modal-permittedip"
+      tabindex="-1"
+      role="basic"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-hidden="true"
+            ></button>
+            <h4 class="modal-title">
+              <%= __('header.allowedip.allowedipsetting') %>
+            </h4>
+          </div>
+          <div class="modal-body form">
+            <form class="form-horizontal" role="form">
+              <div class="form-body">
+                <div class="form-group">
+                  <label class="col-md-3 control-label"
+                    ><%= __('header.allowedip.ip1') %>:</label
+                  >
+                  <div class="col-md-9">
+                    <input
+                      class="form-control input-sm"
+                      type="text"
+                      id="id-input-chongpan-permittedip1"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"
+                    ><%= __('header.allowedip.ip2') %>:</label
+                  >
+                  <div class="col-md-9">
+                    <input
+                      class="form-control input-sm"
+                      type="text"
+                      id="id-input-chongpan-permittedip2"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"
+                    ><%= __('header.allowedip.ip3') %>:</label
+                  >
+                  <div class="col-md-9">
+                    <input
+                      class="form-control input-sm"
+                      type="text"
+                      id="id-input-chongpan-permittedip3"
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn green"
+              id="id-btn-permittedip-chongpan"
+            >
+              <%= __('header.allowedip.setting') %>
+            </button>
+            <button
+              type="button"
+              class="btn dark btn-outline"
+              data-dismiss="modal"
+            >
+              <%= __('header.allowedip.cancellation') %>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $("#id-btn-show-permittedip-chongpan").click(function (e) {
+          e.preventDefault();
+
+          $.ajax({
+            type: "get",
+            url: `/api/chongpan/permittedIp`,
+            success: function (data) {
+              const ip1 = data.address.split(",")[0];
+              const ip2 = data.address.split(",")[1];
+              const ip3 = data.address.split(",")[2];
+
+              $("#id-input-chongpan-permittedip1").val(ip1);
+              $("#id-input-chongpan-permittedip2").val(ip2);
+              $("#id-input-chongpan-permittedip3").val(ip3);
+              $("#id-modal-permittedip").modal("show");
+            },
+            error: function (data) {
+              if (data.msg == "user not found")
+                toastr["error"]("서버오류로 변경할수 없음!", "");
+            },
+          });
+        });
+
+        $("#id-btn-permittedip-chongpan").click(function () {
+          if (
+            $("#id-input-chongpan-permittedip1").val() == "" ||
+            $("#id-input-chongpan-permittedip2").val() == "" ||
+            $("#id-input-chongpan-permittedip3").val() == ""
+          ) {
+            toastr["warning"]("모든 정보를 정확히 입력하세요!", "");
+            return;
+          }
+
+          let data = {
+            ip:
+              $("#id-input-chongpan-permittedip1").val().trim() +
+              "," +
+              $("#id-input-chongpan-permittedip2").val().trim() +
+              "," +
+              $("#id-input-chongpan-permittedip3").val().trim(),
+          };
+
+          $.ajax({
+            type: "post",
+            url: `/api/chongpan/permittedIp`,
+            dataType: "json",
+            data: data,
+            success: function (data) {
+              $("#id-modal-permittedip").modal("hide");
+              toastr["success"]("성공적인 조작", "");
+            },
+            error: function (data) {
+              if (data.responseJSON.msg == "server error occured")
+                toastr["error"]("서버오류로 실패", "");
+            },
+          });
+        });
+      });
+    </script>
+    <%}%>
+
+    <div class="loading">
+      <div class="sk-circle">
+        <div class="sk-circle1 sk-child"></div>
+        <div class="sk-circle2 sk-child"></div>
+        <div class="sk-circle3 sk-child"></div>
+        <div class="sk-circle4 sk-child"></div>
+        <div class="sk-circle5 sk-child"></div>
+        <div class="sk-circle6 sk-child"></div>
+        <div class="sk-circle7 sk-child"></div>
+        <div class="sk-circle8 sk-child"></div>
+        <div class="sk-circle9 sk-child"></div>
+        <div class="sk-circle10 sk-child"></div>
+        <div class="sk-circle11 sk-child"></div>
+        <div class="sk-circle12 sk-child"></div>
+      </div>
+    </div>
+    <script>
+      function date_time(id) {
+          date = new Date;
+          month = date.getMonth();
+          year = date.getFullYear();
+          months = new Array('01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12');
+          d = date.getDate();
+          day = date.getDay();
+          days = new Array('<%= __('header.date.sun') %>', '<%= __('header.date.mon') %>', '<%= __('header.date.tue') %>', '<%= __('header.date.wed') %>', '<%= __('header.date.thu') %>', '<%= __('header.date.fri') %>', '<%= __('header.date.sat') %>');
+          h = date.getHours();
+          if (h < 10) {
+              h = "0" + h;
+          }
+          m = date.getMinutes();
+          if (m < 10) {
+              m = "0" + m;
+          }
+          s = date.getSeconds();
+          if (s < 10) {
+              s = "0" + s;
+          }
+          result = ' ' + year + '-' + months[month] + '-' + d + ' / ' + h + ':' + m + ':' + s + '  ' + days[day];
+          document.getElementById(id).innerHTML = result;
+          setTimeout('date_time("' + id + '");', '1000');
+          return true;
+      }
+      date_time('date_time');
+
+      function startLoading() {
+          $(".loading").prop("style", "display: block;");
+      }
+
+      function endLoading() {
+          $(".loading").prop("style", "display: none;");
+      }
+    </script>
+
+    <% include sidebar.ejs %>
+    <div class="page-content-wrapper">

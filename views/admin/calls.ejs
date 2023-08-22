@@ -1,0 +1,127 @@
+<style>
+    .card-view .title {
+        display: none !important;
+    }
+    
+    .call_dialer {
+        width: 20px;
+        margin-right: 2px;
+    }
+    
+    .call_default_dialer_package_start {
+        display: none;
+        position: absolute;
+        background: rgba(0, 0, 0, 1);
+        border-radius: 4px;
+        height: 100%;
+        top: 0;
+        z-index: 999;
+        padding: 0 10px;
+        left: 22px;
+        color: #FFFFFF;
+    }
+    
+    .call_default_dialer_package_end {
+        display: none;
+        position: absolute;
+        background: rgba(0, 0, 0, 1);
+        border-radius: 4px;
+        height: 100%;
+        top: 0;
+        z-index: 999;
+        padding: 0 10px;
+        left: 44px;
+        color: #FFFFFF;
+    }
+    
+    .call-line {
+        display: -webkit-flex;
+        display: flex;
+        -webkit-align-items: center;
+        align-items: center;
+    }
+    
+    .call-line>div:nth-child(1) {
+        overflow: hidden;
+        -webkit-flex-grow: 1;
+        flex-grow: 1;
+    }
+    
+    @keyframes twinkle {
+        0% {
+            opacity: 0.1;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+    
+    img.call-state {
+        width: 24px;
+        height: auto;
+    }
+    
+    img.twinkle {
+        animation: twinkle 1s ease-in-out infinite;
+    }
+    
+    .hang-up {
+        width: 24px;
+        margin-left: 4px;
+        cursor: pointer;
+    }
+    
+    #myTabContent .card-view-title {
+        display: none;
+    }
+</style>
+<h3 class="page-title">
+</h3>
+<div class="portlet light bordered">
+    <div class="panel-body" style="padding: 0px;">
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="one">
+                <div class="widget-body no-padding">
+                    <table id="call_table"> </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-modal-sm in" id="blacklist_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title"><%= __('calls.prompt') %></h4>
+            </div>
+            <div class="modal-body"><%= __('calls.setItemToBlack') %></div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('calls.cancellation') %></button>
+                <button type="button" class="btn green" id="blacklist_btn"><%= __('calls.decision') %></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-modal-sm in" id="forwarding_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title"><%= __('calls.prompt') %></h4>
+            </div>
+            <div class="modal-body"><%= __('calls.setItemTrasition') %></div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('calls.cancellation') %></button>
+                <button type="button" class="btn green" id="forwarding_btn"><%= __('calls.decision') %></button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var user_appId = '<%- user.appId %>'
+</script>
+<script src="/app/lang/calls_<%= locale %>.js" type="text/javascript"></script>
+<script src="/app/js/calls.js" type="text/javascript"></script>

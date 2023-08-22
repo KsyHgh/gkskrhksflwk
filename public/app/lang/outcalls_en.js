@@ -1,0 +1,16 @@
+const lang = {
+    name: 'name',
+    callingNumber: 'calling number',
+    visibleNumber: 'visible number',
+    updateTime: 'update time',
+    situation: 'situation',
+    operate: 'operation',
+    addition: 'addition',
+    check: 'check',
+    save: 'save',
+    correction: 'correction',
+    msgAlreadyExist: 'already exists',
+    msgSuccessOperation: 'successful operation',
+    msgReallyDelete: 'Are you sure you want to delete it?',
+    msgReallAdd: 'Are you sure you want to add it?',
+}

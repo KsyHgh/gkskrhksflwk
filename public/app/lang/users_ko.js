@@ -1,0 +1,16 @@
+const lang = {
+    name: '이름',
+    actualCallForwardingNumber: '실제수신전환번호',
+    id: '아이디',
+    offDuty: '비번',
+    authority: '권한',
+    expirationDate: '만기날짜',
+    operation: '조작', 
+    addition: '추가',
+    check: '확인',
+    correction: '수정',
+    save: '저장',
+    msgDelete: '정말 삭제하겠습니까?', 
+    msgSuccess: '성공적인 조작',
+    msgValidateAll: '모든 정보를 정확히 입력하세요!', 
+}

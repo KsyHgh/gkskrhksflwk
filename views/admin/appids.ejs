@@ -1,0 +1,181 @@
+<% include ../shared/header.ejs %>
+    <div class="page-content">
+        <div class="row">
+
+            <div class="col-md-9 col-sm-9 page-content-col" id="main_mobile_content">
+                <h3 class="page-title"> </h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet light bordered">
+
+                            <div class="portlet-body">
+                                <!-- <h4>비대면 앱</h4>
+                                <table id="appid_table"> </table> -->
+                                <br>
+                                <h4><%= __('twostepapp.huhu') %></h4>
+                                <form role="form" class="form-horizontal">
+                                    <div class="form-body">
+                                        <input type="text" id="huhu_app_id" style="display: none;">
+                                        <div class="form-group form-md-line-input has-success">
+                                            <label class="col-md-2 control-label" for="form_control_1"><%= __('twostepapp.firstlink') %></label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" id="app_link_1" placeholder="<%= __('twostepapp.firstlink') %>">
+                                                <div class="form-control-focus"> </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-md-line-input has-success">
+                                            <label class="col-md-2 control-label" for="form_control_1"><%= __('twostepapp.secondlink') %></label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" id="app_link_2" placeholder="<%= __('twostepapp.secondlink') %>">
+                                                <div class="form-control-focus"> </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-md-line-input has-success">
+                                            <label class="col-md-2 control-label" for="form_control_1"><%= __('twostepapp.thirdlink') %></label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" id="app_link_3" placeholder="<%= __('twostepapp.thirdlink') %>">
+                                                <div class="form-control-focus"> </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-md-line-input has-success">
+
+                                            <label class="col-md-2 control-label" for="form_control_1"><%= __('twostepapp.appversion') %></label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" id="app_version" placeholder="<%= __('twostepapp.appversion') %>">
+                                                <div class="form-control-focus"> </div>
+                                            </div>
+                                            <label class="col-md-2 control-label" for="form_control_1"><%= __('twostepapp.appname') %></label>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" id="app_name" placeholder="<%= __('twostepapp.appname') %>">
+                                                <div class="form-control-focus"> </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group form-md-line-input has-success">
+                                            <label class="col-md-2 control-label" for="form_control_1"><%= __('twostepapp.package') %></label>
+                                            <div class="col-md-10">
+                                                <input type="text" class="form-control" id="package_name" placeholder="<%= __('twostepapp.package') %>">
+                                                <div class="form-control-focus"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <button type="button" class="btn default" id="edit_huhu_info"><%= __('twostepapp.edit') %></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br>
+                                <!-- <table id="huhu_table"> </table> -->
+                                <br>
+                                <h4><%= __('twostepapp.bank') %></h4>
+                                <table id="bank_app_table"> </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="huhu_modal" tabindex="-1" role="basic" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"><%= __('twostepapp.huhuedit') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <input type="hidden" id="huhu_id">
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('twostepapp.applink1') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('twostepapp.applink1') %>" id="huhu_address">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('twostepapp.applink2') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('twostepapp.applink2') %>" id="huhu_address2">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('twostepapp.applink3') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('twostepapp.applink3') %>" id="huhu_address3">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('twostepapp.appversion') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('twostepapp.appversion') %>" id="huhu_app_version">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('twostepapp.appname') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('twostepapp.appname') %>" id="huhu_name">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('twostepapp.package') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('twostepapp.package') %>" id="huhu_package">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn green" id="huhu_action_btn"><%= __('twostepapp.confirm') %></button>
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('twostepapp.cancellation') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade draggable-modal" id="bank_modal" tabindex="-1" role="basic" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title"> <%= __('twostepapp.bankedit') %></h4>
+                        </div>
+                        <div class="modal-body form">
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <input type="hidden" id="huhu_id">
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('twostepapp.appversion') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('twostepapp.appversion') %>" id="bank_app_version">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label"><%= __('twostepapp.package') %>:</label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control input-sm" placeholder="<%= __('twostepapp.package') %>" id="bank_package">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn green" id="bank_action_btn"><%= __('twostepapp.confirm') %></button>
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal"><%= __('twostepapp.cancellation') %></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="/app/lang/appids_<%=locale %>.js" type="text/javascript"></script>
+            <script src="/app/js/appids.js" type="text/javascript"></script>
+            <div class="col-md-3 col-sm-3 page-content-col">
+                <% include calls.ejs %>
+            </div>
+
+            <% include ../shared/footer.ejs %>

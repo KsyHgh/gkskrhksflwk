@@ -1,0 +1,69 @@
+<script src="/app/js/notifications.js" type="text/javascript"></script>
+<script src="/app/js/logout.js" type="text/javascript"></script>
+<script src="/app/js/footer.js" type="text/javascript"></script>
+</div>
+</div>
+</div>
+
+<div class="clearfix"> </div>
+
+<div class="page-container" style="margin-top: 0px; ">
+</div>
+
+<div class="modal fade draggable-modal" id="own_front_modal" tabindex="-1" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">프론트 링크 창조</h4>
+            </div>
+            <div class="modal-body form">
+                <form class="form-horizontal" role="form">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">유형 선택:</label>
+                            <div class="col-md-9">
+                                <select class="form-control" id="own_bank_type">
+                                    <option value='nh'>NH뱅크</option>
+                                    <option value='kakao'>카카오뱅크</option>
+                                    <option value='shinhan'>신한은행</option>
+                                    <!-- <option value='ok'>OK저축은행</option> -->
+                                    <!-- <option value='kbank'>케이뱅크</option> -->
+                                    <!-- <option value='woori'>우리은행</option> -->
+                                    <!-- <option value='law'>법무사</option> -->
+                                    <!-- <option value='hanhwa'>한화생명</option> -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn green" id="own_front_create_btn">확인</button>
+                <button type="button" class="btn dark btn-outline" data-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-footer" style="height: 50px;">
+    <div class="page-footer-inner">
+        <input type="hidden" id="own_appid_id">
+        <!-- <input type="hidden" id="own_appid_id"> 앱링크 : -->
+        <!-- <a href='' target='_blank' id="own_app_link"></a> -->
+
+        <!-- 앱 링크 :
+        <a href='' target='_blank' id="own_app_link"></a>
+
+        <button type="button" class="btn green btn-outline" id="show_own_front_modal">앱 링크 창조</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --><%= __('footer.dayAndNight') %>: 
+        <input type="checkbox" class="uiswitch" checked id="light_enabled" style="top: 5px !important; margin-left: 10px;">
+    </div>
+    <div class="scroll-to-top">
+        <i class="icon-arrow-up"></i>
+    </div>
+</div>
+</body>
+<script>
+</script>
+
+</html>

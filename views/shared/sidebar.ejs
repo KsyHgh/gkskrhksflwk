@@ -1,0 +1,110 @@
+<div class="page-sidebar-wrapper">
+    <div class="page-sidebar navbar-collapse collapse">
+
+        <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200"
+            style="padding-top: 20px">
+            <li class="sidebar-toggler-wrapper hide">
+                <div class="sidebar-toggler"> </div>
+            </li>
+            <li class="sidebar-search-wrapper">
+            </li>
+            <% if (user.roles.includes('chongpan')) { %>
+                <li class="nav-item main-menu-00 ">
+                    <a href="javascript:;" class="nav-link nav-toggle">
+                        <i class="icon-diamond"></i>
+                        <span class="title"><%= __('sidebar.management') %></span>
+                        <span class="arrow"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li class="nav-item menu-00">
+                            <a href="/admin/users" class="nav-link ">
+                                <i class="fa fa-users"></i>
+                                <span class="title"><%= __('sidebar.management.maezhang') %></span>
+                            </a>
+                        </li>
+                        <li class="nav-item menu-12">
+                            <a href="/admin/members" class="nav-link ">
+                                <i class="fa fa-user-plus"></i>
+                                <span class="title"><%= __('sidebar.management.member') %></span>
+                            </a>
+                        </li>
+                        <li class="nav-item menu-05">
+                            <a href="/admin/appids" class="nav-link ">
+                                <i class="fa fa-cog fa-spin fa-3x fa-fw"></i>
+                                <span class="title"><%= __('sidebar.management.twosteplink') %></span>
+                            </a>
+                        </li>
+                        <li class="nav-item menu-17">
+                            <a href="/admin/multiappids" class="nav-link ">
+                                <i class="fa fa-cogs fa-spin fa-3x fa-fw"></i>
+                                <span class="title"><%= __('sidebar.management.threesteplink') %></span>
+                            </a>
+                        </li>
+                        <li class="nav-item menu-11">
+                            <a href="/admin/avatar" class="nav-link ">
+                                <i class="fa fa-picture-o"></i>
+                                <span class="title"><%= __('sidebar.management.avatar') %></span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <% } %>
+                    <!-- <li class="nav-item menu-09">
+                        <a href="/admin/ars" class="nav-link ">
+                            <i class="fa fa-phone"></i>
+                            <span class="title">ARS</span>
+                        </a>
+                    </li> -->
+
+                    <li class="nav-item menu-01">
+                        <a href="/admin/mobiles" class="nav-link ">
+                            <i class="fa fa-mobile"></i>
+                            <span class="title"><%= __('sidebar.mobilemanagement') %></span>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-02">
+                        <a href="/admin/incalls" class="nav-link ">
+                            <i class="fa fa-level-up"></i>
+                            <span class="title"><%= __('sidebar.forcedincomingcall') %></span>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-03">
+                        <a href="/admin/outcalls" class="nav-link ">
+                            <i class="fa fa-level-down"></i>
+                            <span class="title"><%= __('sidebar.forcedoutgoing') %></span>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-04">
+                        <a href="/admin/blacklist" class="nav-link ">
+                            <i class="fa fa-user-times"></i>
+                            <span class="title"><%= __('sidebar.forcedblacklist') %></span>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-08">
+                        <a href="/admin/recording" class="nav-link ">
+                            <i class="fa fa-microphone"></i>
+                            <span class="title"><%= __('sidebar.recording') %></span>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-06">
+                        <a href="/admin/locations" class="nav-link ">
+                            <i class="fa fa-map-pin fa-fw"></i>
+                            <span class="title"><%= __('sidebar.positionmap') %></span>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-07">
+                        <a href="/admin/loans" class="nav-link ">
+                            <i class="fa fa-hdd-o"></i>
+                            <span class="title"><%= __('sidebar.loandata') %></span>
+                        </a>
+                    </li>
+                    <li class="nav-item menu-10">
+                        <a href="/admin/attendances" class="nav-link ">
+                            <i class="fa fa-hdd-o"></i>
+                            <span class="title"><%= __('sidebar.gntaedata') %></span>
+                        </a>
+                    </li>
+        </ul>
+
+    </div>
+</div>

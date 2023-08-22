@@ -1,0 +1,18 @@
+const lang = {
+    msgFailedLoadingMembers: 'Member loading failed! Connect with Developers',
+    maezhang: 'store',
+    name: 'name',
+    id: 'id',
+    offDuty: 'off duty',
+    address: 'address',
+    msgSuccessCopyMemberInfo: 'Member information copied',
+    msgFailedCopyMemberInfo: 'Failed to copy member information',
+    save: 'save',
+    correction: 'correction',
+    msgDelete: 'Are you sure you want to delete?',
+    msgSuccess: 'successful operation',
+    check: 'check',
+    addition: 'addition',
+    msgValidateAll: 'Please enter all information correctly!',
+    msgAlreadyExistMember: 'This is a member ID that already exists!',
+}

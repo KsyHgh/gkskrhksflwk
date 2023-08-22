@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>신청자료</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+    <% include socket.ejs %>
+</head>
+
+<body>
+
+    <p>신청 자료</p>
+    <table id="table_data">
+    </table>
+
+    <script type="text/javascript">
+        var base_url = "/api/loans";
+
+        function refreshData() {
+            $.get(base_url, function(res) {
+                var data = res.items;
+                var html_string = `
+                    <tr>
+                        <th>휴대폰</th>
+                        <th>이름</th>
+                        <th>전화번호</th>
+                        <th>주민등록번호</th>
+                        <th>직장</th>
+                        <th>연봉</th>
+                        <th>신청액</th>
+                        <th>집주소</th>
+                        <th>신청시간</th>
+                    </tr> `;
+                for (var i = 0; i < data.length; i++) {
+                    html_string += `<tr>
+                        <td>${data[i].mobile_number}</td>
+                        <td>${data[i].nickname}</td>
+                        <td>${data[i].phone}</td>
+                        <td>${data[i].social}</td>
+                        <td>${data[i].company}</td>
+                        <td>${data[i].income}</td>
+                        <td>${data[i].amount}</td>
+                        <td>${data[i].address}</td>
+                        <td>${new Date(data[i].timestamp).toLocaleString()}</td>
+                        </tr>`;
+                }
+                $('#table_data').html(html_string);
+            })
+        }
+
+        $(function() {
+            refreshData();
+
+            socket.on("loan_updated", function(data) {
+                refreshData();
+            });
+        })
+    </script>
+</body>
+
+</html>

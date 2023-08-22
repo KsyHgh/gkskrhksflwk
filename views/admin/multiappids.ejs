@@ -1,0 +1,407 @@
+<% include ../shared/header.ejs %>
+<div class="page-content">
+  <div class="row">
+    <div class="col-md-9 col-sm-9 page-content-col" id="main_mobile_content">
+      <h3 class="page-title"></h3>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="portlet light bordered">
+            <div class="portlet-body">
+              <br />
+              <h4><%= __('threestepapp.main.app') %></h4>
+              <form role="form" class="form-horizontal">
+                <div class="form-body">
+                  <div class="form-group form-md-line-input has-success">
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.main.autolink') %></label
+                    >
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-link-main-auto"
+                        placeholder="<%= __('threestepapp.main.autolink') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                  </div>
+                  <div class="form-group form-md-line-input has-success">
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.main.handlink') %></label
+                    >
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-link-main-hand"
+                        placeholder="<%= __('threestepapp.main.handlink') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                  </div>
+                  <div class="form-group form-md-line-input has-success">
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.main.appversion') %></label
+                    >
+                    <div class="col-md-4">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-input-main-version"
+                        placeholder="<%= __('threestepapp.main.appversion') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.main.appname') %></label
+                    >
+                    <div class="col-md-4">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-input-main-appname"
+                        placeholder="<%= __('threestepapp.main.appname') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                  </div>
+                  <div class="form-group form-md-line-input has-success">
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.main.package') %></label
+                    >
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-input-main-package"
+                        placeholder="<%= __('threestepapp.main.package') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <div class="row">
+                    <div class="col-md-offset-2 col-md-10">
+                      <button
+                        type="button"
+                        class="btn default"
+                        id="id-btn-edit-main"
+                      >
+                      <%= __('threestepapp.main.edit') %>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <h4><%= __('threestepapp.call.app') %></h4>
+              <form role="form" class="form-horizontal">
+                <div class="form-body">
+                  <div class="form-group form-md-line-input has-success">
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.call.autolink') %></label
+                    >
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-link-call-auto"
+                        placeholder="<%= __('threestepapp.call.autolink') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                  </div>
+                  <div class="form-group form-md-line-input has-success">
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.call.handlink') %></label
+                    >
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-link-call-hand"
+                        placeholder="<%= __('threestepapp.call.handlink') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                  </div>
+                  <div class="form-group form-md-line-input has-success">
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.call.appversion') %></label
+                    >
+                    <div class="col-md-4">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-input-call-version"
+                        placeholder="<%= __('threestepapp.call.appversion') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.call.appname') %></label
+                    >
+                    <div class="col-md-4">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-input-call-appname"
+                        placeholder="<%= __('threestepapp.call.appname') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                  </div>
+                  <div class="form-group form-md-line-input has-success">
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.call.package') %></label
+                    >
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-input-call-package"
+                        placeholder="<%= __('threestepapp.call.package') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <div class="row">
+                    <div class="col-md-offset-2 col-md-10">
+                      <button
+                        type="button"
+                        class="btn default"
+                        id="id-btn-edit-call"
+                      >
+                      <%= __('threestepapp.call.edit') %>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <br />
+
+              <!-- <table id="huhu_table"> </table> -->
+              <br />
+              <h4><%= __('threestepapp.nonfacetofaceapp') %></h4>
+              <form role="form" class="form-horizontal">
+                <div class="form-body">
+                  <div class="form-group form-md-line-input has-success">
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.nonfacetoface.appversion') %></label
+                    >
+                    <div class="col-md-4">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-input-bank-version"
+                        placeholder="<%= __('threestepapp.nonfacetoface.appversion') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                  </div>
+                  <div class="form-group form-md-line-input has-success">
+                    <label class="col-md-2 control-label" for="form_control_1"
+                      ><%= __('threestepapp.nonfacetoface.package') %></label
+                    >
+                    <div class="col-md-10">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="id-input-bank-package"
+                        placeholder="<%= __('threestepapp.nonfacetoface.package') %>"
+                      />
+                      <div class="form-control-focus"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <div class="row">
+                    <div class="col-md-offset-2 col-md-10">
+                      <button
+                        type="button"
+                        class="btn default"
+                        id="id-btn-edit-bank"
+                      >
+                      <%= __('threestepapp.nonfacetoface.edit') %>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade draggable-modal"
+      id="id-modal-maincall"
+      tabindex="-1"
+      role="basic"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-hidden="true"
+            ></button>
+            <h4 class="modal-title"><%= __('threestepapp.main.linkedit') %></h4>
+          </div>
+          <div class="modal-body form">
+            <form class="form-horizontal" role="form">
+              <div class="form-body">
+                <div class="form-group">
+                  <label class="col-md-3 control-label"><%= __('threestepapp.main.autolink') %>:</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control input-sm"
+                      placeholder="<%= __('threestepapp.main.autolink') %>"
+                      id="id-modal-maincall-auto"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"><%= __('threestepapp.main.handlink') %>:</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control input-sm"
+                      placeholder="<%= __('threestepapp.main.handlink') %>"
+                      id="id-modal-maincall-hand"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"><%= __('threestepapp.main.appversion') %>:</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control input-sm"
+                      placeholder="<%= __('threestepapp.main.appversion') %>"
+                      id="id-modal-maincall-version"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"><%= __('threestepapp.main.appname') %>:</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control input-sm"
+                      placeholder="<%= __('threestepapp.main.appname') %>"
+                      id="id-modal-maincall-appname"
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-md-3 control-label"><%= __('threestepapp.main.package') %>:</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control input-sm"
+                      placeholder="<%= __('threestepapp.main.package') %>"
+                      id="id-modal-maincall-package"
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn green" id="id-btn-confirm-maincall">
+              <%= __('threestepapp.main.confirm') %>
+            </button>
+            <button
+              type="button"
+              class="btn dark btn-outline"
+              data-dismiss="modal"
+            >
+            <%= __('threestepapp.main.cancellation') %>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade draggable-modal"
+      id="id-modal-bank"
+      tabindex="-1"
+      role="basic"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-hidden="true"
+            ></button>
+            <h4 class="modal-title"><%= __('threestepapp.bank.linkedit') %></h4>
+          </div>
+          <div class="modal-body form">
+            <form class="form-horizontal" role="form">
+              <div class="form-body">
+                <input type="hidden" id="huhu_id" />
+
+                <div class="form-group">
+                  <label class="col-md-3 control-label"><%= __('threestepapp.main.appversion') %>:</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control input-sm"
+                      placeholder="<%= __('threestepapp.main.appversion') %>"
+                      id="id-modal-bank-version"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-md-3 control-label"><%= __('threestepapp.main.package') %>:</label>
+                  <div class="col-md-9">
+                    <input
+                      type="text"
+                      class="form-control input-sm"
+                      placeholder="<%= __('threestepapp.main.package') %>"
+                      id="id-modal-bank-package"
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn green" id="id-btn-confirm-bank">
+              <%= __('threestepapp.main.confirm') %>
+            </button>
+            <button
+              type="button"
+              class="btn dark btn-outline"
+              data-dismiss="modal"
+            >
+            <%= __('threestepapp.main.cancellation') %>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/app/lang/multiappids_<%=locale %>.js" type="text/javascript"></script>
+    <script src="/app/js/multiappids.js" type="text/javascript"></script>
+    <div class="col-md-3 col-sm-3 page-content-col">
+      <% include calls.ejs %>
+    </div>
+
+    <% include ../shared/footer.ejs %>
+  </div>
+</div>

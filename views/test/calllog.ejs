@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>통화 기록</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+    <% include socket.ejs %>
+</head>
+
+<body>
+
+    <p>통화 기록</p>
+    <div>
+        <button type="button" onclick="uploadCallLog()">휴대폰에서 다시 가져오기</button>
+        <span id="upload_result"></span>
+    </div>
+    <table id="table_data">
+    </table>
+
+    <script type="text/javascript">
+        var id = '<%=id%>';
+        var base_url = `/api/mobiles/${id}/calllog`;
+
+        function refresh() {
+            $.get(base_url, function(res) {
+                var data = res.items;
+                var html_string = `
+                    <tr>
+                    <th>시간</th>
+                    <th>유형</th>
+                    <th>전화번호</th>
+                    <th>이름</th>
+                    <th>통화시간</th>
+                </tr> `;
+                for (var i = 0; i < data.length; i++) {
+                    html_string += `<tr>
+                        <td>${new Date(data[i].time).toISOString()}</td>
+                        <td>${data[i].type}</td>
+                        <td>${data[i].number}</td>
+                        <td>${data[i].name}</td>
+                        <td>${Math.ceil(data[i].duration / 1000)}s</td>
+                        </tr>`;
+                }
+                $('#table_data').html(html_string);
+            })
+        }
+
+        $(function() {
+            refresh();
+
+            socket.on("calllog_updated", function() {
+                console.log("update_calllog");
+                $('#upload_result').text('성공');
+                refresh();
+            });
+        });
+
+        function uploadCallLog() {
+            $('#upload_result').text('휴대폰에 연결중');
+            $.ajax({
+                type: 'post',
+                url: `/api/mobile/upload_calllog`,
+                data: {
+                    id,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('#upload_result').text('불러오는 중');
+                },
+                error: function(data) {
+                    $('#upload_result').text('휴대폰 연결 실패');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

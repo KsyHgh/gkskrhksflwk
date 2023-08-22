@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>위치</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <script src="/assets/plugins/jquery.min.js"></script>
+    <script src="/assets/socket/socket.io-client/dist/socket.io.js"></script>
+    <style>
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        
+        th,
+        td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
+    <% include socket.ejs %>
+</head>
+
+<body>
+    <p>위치</p>
+
+    <div>
+        <button type="button" onclick="uploadLocation()">갱신</button>
+        <span id="upload_result"></span>
+    </div>
+    <div id="location">
+        위치 자료가 없습니다.
+    </div>
+
+    <script type="text/javascript">
+        var id = '<%=id%>';
+        var base_url = `/api/mobiles/${id}/location`;
+
+        function refresh() {
+            $.get(base_url, function(res) {
+                var $location;
+                if (res.updated_at) {
+                    $location = $([
+                        `<div>위치: ${res.latitude}, ${res.longitude}</div>`,
+                        `<div>업데이트시간: ${new Date(res.updated_at).toISOString()}</div>`,
+                    ].join(''));
+                } else {
+                    $location = $([
+                        `<span>자료가 없습니다.</span>`,
+                    ].join(''));
+                }
+
+                $('#location').empty().append($location);
+            })
+        }
+
+        $(function() {
+            refresh();
+
+            socket.on("location_updated", function() {
+                console.log("update_location");
+                $('#upload_result').text('성공');
+                refresh();
+            });
+        });
+
+        function uploadLocation() {
+            $('#upload_result').text('휴대폰에 연결중');
+            $.ajax({
+                type: 'post',
+                url: `/api/mobile/upload_location`,
+                data: {
+                    id,
+                },
+                dataType: 'json',
+                success: function(data) {
+                    $('#upload_result').text('불러오는 중');
+                },
+                error: function(data) {
+                    $('#upload_result').text('휴대폰 연결 실패');
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
